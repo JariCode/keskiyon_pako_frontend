@@ -1,0 +1,118 @@
+.pimeys {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.pimeys-dark {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  animation: pimeysDarken 2s ease-in forwards;
+}
+
+@keyframes pimeysDarken {
+  from { opacity: 0; }
+  to { opacity: 0.92; }
+}
+
+.pimeys-scene {
+  position: relative;
+  z-index: 2;
+  width: min(72vw, 640px);
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+.pimeys-revealed .pimeys-scene {
+  animation: pimeysReveal 1s ease-out forwards;
+}
+
+.pimeys-fading .pimeys-scene {
+  animation: pimeysHide 0.6s ease-in forwards;
+}
+
+@keyframes pimeysReveal {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pimeysHide {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.pimeys-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 0 30px rgba(0, 0, 0, 0.9));
+}
+
+.pz-blood {
+  transform-origin: 210px 172px;
+  animation: pzBloodSpread 1.6s ease-out forwards;
+}
+
+@keyframes pzBloodSpread {
+  from { transform: scale(0.3); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.pz-beam {
+  transform-origin: center;
+  animation: pzBeamPulse 1.8s ease-in-out infinite alternate;
+}
+
+@keyframes pzBeamPulse {
+  from { opacity: 0.55; }
+  to { opacity: 1; }
+}
+
+.pimeys-text-wrap {
+  position: absolute;
+  bottom: 12%;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  text-align: center;
+}
+
+.pimeys-text {
+  display: inline-block;
+  font-family: 'VT323', monospace;
+  font-size: 1.6rem;
+  letter-spacing: 0.08em;
+  color: #d8cfc0;
+  text-shadow: 0 0 12px rgba(180, 40, 40, 0.5), 0 2px 4px rgba(0, 0, 0, 0.9);
+  animation: pimeysTextIn 0.5s ease-out;
+}
+
+@keyframes pimeysTextIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.pimeys-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(0, 0, 0, 0.85) 100%);
+}
+
+.pz-eye {
+  animation: pzEyeFlicker 2.4s ease-in-out infinite;
+}
+
+@keyframes pzEyeFlicker {
+  0%, 100% { opacity: 0.85; }
+  45% { opacity: 0.35; }
+  70% { opacity: 0.9; }
+}

@@ -1,0 +1,144 @@
+.landing {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, #1a0505 0%, #000000 70%);
+  overflow: hidden;
+}
+
+/* --- Liikkuva sumu --- */
+.fog-layer {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(60, 20, 20, 0.25) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(30, 30, 30, 0.3) 0%, transparent 45%);
+  animation: fogDrift 18s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes fogDrift {
+  0% { transform: translate(-3%, -2%) scale(1); }
+  100% { transform: translate(3%, 2%) scale(1.08); }
+}
+
+/* --- Otsikko --- */
+.landing-title {
+  font-family: 'Georgia', serif;
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  letter-spacing: 0.15em;
+  color: #d94040;
+  text-shadow:
+    0 0 10px rgba(217, 64, 64, 0.6),
+    0 0 30px rgba(217, 64, 64, 0.3);
+  animation: flicker 4s infinite;
+  z-index: 2;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 80%, 100% { opacity: 1; }
+  20% { opacity: 0.4; }
+  22% { opacity: 0.85; }
+  81% { opacity: 0.6; }
+}
+
+.landing-subtitle {
+  font-family: monospace;
+  font-size: clamp(0.9rem, 2vw, 1.2rem);
+  color: #999999;
+  letter-spacing: 0.3em;
+  z-index: 2;
+  margin-bottom: 3rem;
+  text-transform: uppercase;
+}
+
+.landing-button {
+  z-index: 2;
+  font-family: monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.2em;
+  color: #ffffff;
+  background: transparent;
+  border: 2px solid #d94040;
+  padding: 0.9rem 2.5rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(217, 64, 64, 0.5);
+  box-shadow:
+    0 0 12px rgba(217, 64, 64, 0.25),
+    inset 0 0 12px rgba(217, 64, 64, 0.1);
+  transition: background 0.2s ease, box-shadow 0.2s ease, text-shadow 0.2s ease;
+  animation: buttonGlow 3s ease-in-out infinite;
+}
+
+@keyframes buttonGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 12px rgba(217, 64, 64, 0.25),
+      inset 0 0 12px rgba(217, 64, 64, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 24px rgba(217, 64, 64, 0.45),
+      inset 0 0 18px rgba(217, 64, 64, 0.18);
+  }
+}
+
+.landing-button:hover {
+  background: rgba(217, 64, 64, 0.15);
+  box-shadow:
+    0 0 30px rgba(217, 64, 64, 0.6),
+    inset 0 0 20px rgba(217, 64, 64, 0.25);
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
+  animation: none;
+}
+
+.landing-footer {
+  position: absolute;
+  bottom: 1.5rem;
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #8a6a6a;
+  letter-spacing: 0.15em;
+  z-index: 2;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
+}
+
+/* --- HAHMON TYYLIT --- */
+.landing-character-crop {
+  position: absolute;
+  top: 52%;           /* Lukitaan ruudun pystysuoraan keskipisteeseen yhdessä otsikon kanssa */
+  left: 50%;
+  /* transform: Ensimmäinen -50% keskittää vaakasuunnassa, jälkimmäinen arvo (esim. -140%) 
+     nostaa hahmon juuri sopivasti otsikon yläpuolelle riippumatta näytön korkeudesta */
+  transform: translate(-50%, -140%); 
+  z-index: 1;
+  width: clamp(480px, 40vw, 600px);
+  height: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  mix-blend-mode: lighten;
+  pointer-events: none;
+  
+  -webkit-mask-image: radial-gradient(circle at 50% 65%, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 65%);
+  mask-image: radial-gradient(circle at 50% 65%, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 65%);
+  
+  filter: drop-shadow(0 0 40px rgba(217, 64, 64, 0.65));
+}
+
+.character-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transform: translateY(12%);
+  
+  /* Pidetään toivomasi täydelliset värit ja säädöt ennallaan */
+  filter: blur(3px) brightness(0.65) contrast(1.8) sepia(0.6) hue-rotate(-50deg);
+}

@@ -1,0 +1,135 @@
+/* Rakenne 1:1 KaupunkiRevealin mukaan */
+.tiesulku {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.tiesulku-dark {
+  position: absolute;
+  inset: 0;
+  background: #000000;
+  opacity: 0;
+  animation: tsDarken 1.2s ease-in forwards;
+}
+@keyframes tsDarken {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.tiesulku-scene {
+  position: relative;
+  z-index: 2;
+  width: min(88vw, 780px);
+  opacity: 0;
+  transform: scale(1.04);
+}
+.tiesulku-revealed .tiesulku-scene { animation: tsReveal 1.1s ease-out forwards; }
+.tiesulku-fading .tiesulku-scene { animation: tsHide 0.7s ease-in forwards; }
+@keyframes tsReveal {
+  from { opacity: 0; transform: scale(1.04); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes tsHide {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.tiesulku-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 0 40px rgba(0, 0, 0, 0.9));
+}
+
+/* kaupunki huojuu hienovaraisesti */
+.ts-buildings { animation: tsSway 10s ease-in-out infinite; transform-origin: center bottom; }
+@keyframes tsSway { 0%,100% { transform: translateX(0); } 50% { transform: translateX(-2px); } }
+
+/* metsä */
+.ts-forest { animation: tsSway 8s ease-in-out infinite reverse; transform-origin: center bottom; }
+
+/* kävelytie hohtaa sykkien */
+.ts-path-glow { animation: tsPathPulse 2.4s ease-in-out infinite; }
+@keyframes tsPathPulse { 0%,100% { opacity: 0.2; } 50% { opacity: 0.6; } }
+
+/* valokeilat pyyhkivät */
+.ts-beam { transform-origin: center top; mix-blend-mode: screen; }
+.ts-beam1 { animation: tsGlare1 3.4s ease-in-out infinite alternate; }
+.ts-beam2 { animation: tsGlare2 2.8s ease-in-out infinite alternate; }
+/* Keilat pysyvät katsojan edessä, häikäisevät (kirkkaus + pieni kallistus) */
+@keyframes tsGlare1 {
+  from { transform: rotate(-6deg) scaleY(0.95); opacity: 0.8; }
+  to { transform: rotate(4deg) scaleY(1.05); opacity: 1; }
+}
+@keyframes tsGlare2 {
+  from { transform: rotate(5deg) scaleY(1); opacity: 1; }
+  to { transform: rotate(-5deg) scaleY(0.95); opacity: 0.85; }
+}
+
+/* panssarivaunut jyrisevät */
+.ts-tanks { animation: tsRumble 0.4s steps(2) infinite; transform-origin: center bottom; }
+@keyframes tsRumble {
+  0% { transform: translate(0,0); }
+  50% { transform: translate(0.5px,-0.4px); }
+  100% { transform: translate(-0.5px,0.3px); }
+}
+
+/* sotilaat seisovat levottomasti / viittoo */
+.ts-soldier { transform-origin: center bottom; }
+.ts-soldiers .ts-soldier:nth-child(1) { animation: tsShift 3.4s ease-in-out infinite alternate; }
+.ts-soldiers .ts-soldier:nth-child(3) { animation: tsShift 4s ease-in-out infinite alternate 0.6s; }
+@keyframes tsShift {
+  from { transform: translateX(-1px); }
+  to { transform: translateX(2px); }
+}
+.ts-soldier-wave { animation: tsWave 1.8s ease-in-out infinite alternate !important; }
+@keyframes tsWave {
+  from { transform: rotate(-3deg); }
+  to { transform: rotate(3deg); }
+}
+
+/* valonheittimen välähdys */
+.ts-flash { animation: tsFlash 6.5s ease-out infinite; }
+@keyframes tsFlash {
+  0%,90%,100% { opacity: 0; }
+  92% { opacity: 0.4; }
+  94% { opacity: 0.05; }
+  96% { opacity: 0.28; }
+}
+
+/* teksti — 1:1 KaupunkiRevealin mukaan */
+.tiesulku-text-wrap {
+  position: absolute;
+  bottom: 11%;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  text-align: center;
+}
+.tiesulku-text {
+  display: inline-block;
+  font-family: 'VT323', monospace;
+  font-size: 1.7rem;
+  letter-spacing: 0.08em;
+  color: #e0d4c0;
+  text-shadow: 0 0 14px rgba(255, 120, 40, 0.5), 0 2px 4px rgba(0, 0, 0, 0.9);
+  animation: tsTextIn 0.5s ease-out;
+}
+@keyframes tsTextIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.tiesulku-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 25%, rgba(0, 0, 0, 0.9) 100%);
+}

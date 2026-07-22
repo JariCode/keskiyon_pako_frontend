@@ -1,0 +1,301 @@
+.profile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.profile-box {
+  width: min(100%, 440px);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: rgba(15, 10, 10, 0.97);
+  border: 1px solid rgba(217, 64, 64, 0.3);
+  border-radius: 8px;
+  padding: 1.8rem;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.8);
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.profile-title {
+  font-family: monospace;
+  color: #d94040;
+  font-size: 1.3rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.profile-close {
+  background: none;
+  border: none;
+  color: #888888;
+  font-size: 1.6rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+.profile-close:hover {
+  color: #ffffff;
+}
+
+.profile-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.profile-tab {
+  flex: 1;
+  min-width: 80px;
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #999999;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  padding: 0.5rem 0.3rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.15s ease;
+}
+
+.profile-tab:hover {
+  color: #ffffff;
+  border-color: rgba(217, 64, 64, 0.4);
+}
+
+.profile-tab.active {
+  color: #ffffff;
+  background: rgba(217, 64, 64, 0.2);
+  border-color: #d94040;
+}
+
+.profile-tab.danger.active {
+  background: rgba(180, 20, 20, 0.3);
+  border-color: #b41414;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.profile-field label {
+  font-family: monospace;
+  font-size: 0.78rem;
+  color: #999999;
+  margin-bottom: 0.3rem;
+}
+
+.profile-field input {
+  font-family: monospace;
+  font-size: 0.95rem;
+  padding: 0.6rem 0.8rem;
+  background: #0a0a0a;
+  border: 1px solid #333333;
+  border-radius: 4px;
+  color: #ffffff;
+  width: 100%;
+}
+
+.profile-field input:focus {
+  outline: none;
+  border-color: #d94040;
+}
+
+/* --- Salasanakenttä + näytä/piilota --- */
+.password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrap input {
+  padding-right: 3.2rem;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 6px;
+  background: none;
+  border: none;
+  color: #777777;
+  cursor: pointer;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.password-toggle:hover {
+  color: #d94040;
+  background: rgba(217, 64, 64, 0.1);
+}
+
+.password-toggle svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.profile-current {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #777777;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 2px solid #444444;
+  padding: 0.5rem 0.7rem;
+  margin-bottom: 1rem;
+}
+
+.profile-submit {
+  width: 100%;
+  font-family: monospace;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+  background: #d94040;
+  border: none;
+  border-radius: 4px;
+  padding: 0.7rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  transition: background 0.2s ease;
+}
+
+.profile-submit:hover {
+  background: #b93030;
+}
+
+.profile-submit:disabled {
+  background: #555555;
+  cursor: not-allowed;
+}
+
+.profile-submit.danger {
+  background: #8a1010;
+}
+
+.profile-submit.danger:hover {
+  background: #b41414;
+}
+
+.profile-error {
+  font-family: monospace;
+  font-size: 0.82rem;
+  color: #ff6666;
+  background: rgba(255, 0, 0, 0.08);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: 4px;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.profile-success {
+  font-family: monospace;
+  font-size: 0.82rem;
+  color: #66ff88;
+  background: rgba(0, 255, 80, 0.06);
+  border: 1px solid rgba(0, 255, 80, 0.25);
+  border-radius: 4px;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.profile-warning {
+  font-family: monospace;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: #ffaa66;
+  background: rgba(255, 120, 0, 0.08);
+  border: 1px solid rgba(255, 120, 0, 0.3);
+  border-radius: 4px;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+/* --- Vahvistusnäkymä poistolle --- */
+.confirm-panel {
+  border: 1px solid rgba(180, 20, 20, 0.5);
+  background: rgba(60, 0, 0, 0.25);
+  border-radius: 6px;
+  padding: 1.2rem;
+}
+
+.confirm-title {
+  font-family: monospace;
+  font-size: 1rem;
+  color: #ff6666;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+
+.confirm-text {
+  font-family: monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #ddc0c0;
+  margin-bottom: 1.2rem;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.confirm-actions button {
+  flex: 1;
+  font-family: monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  border-radius: 4px;
+  padding: 0.65rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+}
+
+.confirm-cancel {
+  color: #cccccc;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.confirm-cancel:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+
+.confirm-accept {
+  color: #ffffff;
+  background: #8a1010;
+  border: 1px solid #b41414;
+}
+
+.confirm-accept:hover {
+  background: #b41414;
+}
+
+.confirm-accept:disabled {
+  background: #555555;
+  border-color: #555555;
+  cursor: not-allowed;
+}

@@ -1,0 +1,118 @@
+.mokki {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.mokki-dark {
+  position: absolute;
+  inset: 0;
+  background: #000000;
+  opacity: 0;
+  animation: mkDarken 1.2s ease-in forwards;
+}
+
+@keyframes mkDarken {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.mokki-scene {
+  position: relative;
+  z-index: 2;
+  width: min(88vw, 780px);
+  opacity: 0;
+  transform: scale(1.08) translateY(3%);
+}
+
+.mokki-revealed .mokki-scene {
+  animation: mkReveal 1.3s ease-out forwards;
+}
+
+.mokki-fading .mokki-scene {
+  animation: mkHide 0.7s ease-in forwards;
+}
+
+@keyframes mkReveal {
+  from { opacity: 0; transform: scale(1.08) translateY(3%); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes mkHide {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.mokki-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 0 40px rgba(0, 0, 0, 0.9));
+}
+
+/* Kaminan hehku sykkii pehmeästi */
+.mk-hearth-glow {
+  transform-origin: center;
+  mix-blend-mode: screen;
+  animation: mkGlowPulse 2.4s ease-in-out infinite alternate;
+}
+@keyframes mkGlowPulse {
+  from { opacity: 0.75; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1.04); }
+}
+
+/* Liekki lepattaa */
+.mk-fire {
+  transform-origin: bottom center;
+  animation: mkFireFlicker 0.6s ease-in-out infinite alternate;
+}
+@keyframes mkFireFlicker {
+  from { opacity: 0.85; transform: scaleY(0.95) scaleX(1.02); }
+  to { opacity: 1; transform: scaleY(1.05) scaleX(0.98); }
+}
+
+/* Pölyhiukkaset leijuvat hitaasti */
+.mk-dust circle {
+  animation: mkDustFloat 5s ease-in-out infinite alternate;
+}
+@keyframes mkDustFloat {
+  from { transform: translateY(0); opacity: 0.4; }
+  to { transform: translateY(-14px); opacity: 0.7; }
+}
+
+.mokki-text-wrap {
+  position: absolute;
+  bottom: 11%;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  text-align: center;
+}
+
+.mokki-text {
+  display: inline-block;
+  font-family: 'VT323', monospace;
+  font-size: 1.7rem;
+  letter-spacing: 0.08em;
+  color: #e0d4c0;
+  text-shadow: 0 0 14px rgba(255, 150, 60, 0.5), 0 2px 4px rgba(0, 0, 0, 0.9);
+  animation: mkTextIn 0.5s ease-out;
+}
+
+@keyframes mkTextIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mokki-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 25%, rgba(0, 0, 0, 0.9) 100%);
+}

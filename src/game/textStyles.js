@@ -1,0 +1,23 @@
+export const textStyles = {
+  hint: { fontSize: '15px', color: '#cccccc' },
+  roomLabel: { fontSize: '13px', color: '#888888' },
+  roomLabelBedroom: { fontSize: '13px', color: '#668866' },
+  roomLabelKitchen: { fontSize: '13px', color: '#666688' },
+  roomLabelLiving: { fontSize: '13px', color: '#886666' },
+  itemHint: {
+    fontSize: '16px',
+    color: '#fff2c0',
+    fontStyle: 'bold',
+    backgroundColor: '#000000cc',
+    padding: { x: 8, y: 4 },
+    stroke: '#000000',
+    strokeThickness: 3,
+  },
+  success: { fontSize: '15px', color: '#88ff88' },
+  danger: { fontSize: '16px', color: '#ff4444' },
+  warning: { fontSize: '15px', color: '#ffaa66' },
+  levelUp: { fontSize: '15px', color: '#ffdd44' },
+  hp: { fontSize: '13px', color: '#ff6666' },
+  news: { fontSize: '13px', color: '#88ff88', wordWrap: { width: 480 } },
+  gameOver: { fontSize: '40px', color: '#ff0000' },
+};

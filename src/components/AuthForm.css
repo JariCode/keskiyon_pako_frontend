@@ -1,0 +1,142 @@
+.auth-screen {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, #150808 0%, #000000 70%);
+}
+
+.auth-box {
+  width: min(90%, 380px);
+  background: rgba(15, 10, 10, 0.85);
+  border: 1px solid rgba(217, 64, 64, 0.3);
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+}
+
+.auth-title {
+  font-family: monospace;
+  color: #d94040;
+  font-size: 1.4rem;
+  letter-spacing: 0.1em;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.auth-field label {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #999999;
+  margin-bottom: 0.3rem;
+}
+
+.auth-field input {
+  font-family: monospace;
+  font-size: 0.95rem;
+  padding: 0.6rem 0.8rem;
+  background: #0a0a0a;
+  border: 1px solid #333333;
+  border-radius: 4px;
+  color: #ffffff;
+  width: 100%;
+}
+
+.auth-field input:focus {
+  outline: none;
+  border-color: #d94040;
+}
+
+.auth-submit {
+  width: 100%;
+  font-family: monospace;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+  background: #d94040;
+  border: none;
+  border-radius: 4px;
+  padding: 0.7rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  transition: background 0.2s ease;
+}
+
+.auth-submit:hover {
+  background: #b93030;
+}
+
+.auth-submit:disabled {
+  background: #555555;
+  cursor: not-allowed;
+}
+
+.auth-toggle {
+  text-align: center;
+  margin-top: 1rem;
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #888888;
+}
+
+.auth-toggle button {
+  background: none;
+  border: none;
+  color: #d94040;
+  cursor: pointer;
+  font-family: monospace;
+  text-decoration: underline;
+}
+
+.auth-error {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #ff6666;
+  background: rgba(255, 0, 0, 0.08);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: 4px;
+  padding: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.password-wrap input {
+  padding-right: 3.2rem;
+}
+.password-toggle {
+  position: absolute;
+  right: 6px;
+  background: none;
+  border: none;
+  color: #777777;
+  cursor: pointer;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+.password-toggle:hover {
+  color: #d94040;
+  background: rgba(217, 64, 64, 0.1);
+}
+.password-toggle svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
