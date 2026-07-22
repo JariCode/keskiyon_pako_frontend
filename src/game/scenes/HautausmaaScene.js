@@ -50,6 +50,7 @@ export default class HautausmaaScene extends BaseScene {
     this.loadEnemyType('tytto');
     this.loadEnemyType('mohikaani');
     this.loadEnemyType('nainen');
+    this.loadEnemyType('mies');
     this.load.tilemapTiledJSON('hautausmaa', '/assets/hautausmaa.json');
   }
 
@@ -286,7 +287,7 @@ export default class HautausmaaScene extends BaseScene {
     }
     if (!this.enemy3Spawned && this.player.x > 29 * TILE) {
       this.enemy3Spawned = true;
-      this.spawnEnemy('cabinZombie', 35, 22);
+      this.spawnEnemy('mies', 35, 22);
     }
     if (!this.enemy4Spawned && this.player.x > 60 * TILE) {
       this.enemy4Spawned = true;

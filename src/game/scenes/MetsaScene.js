@@ -37,9 +37,9 @@ export default class MetsaScene extends BaseScene {
       frameHeight: 32,
     });
     this.load.audio('punch', '/assets/sfx/punch.mp3');
-    this.loadEnemyType('mies');
     this.loadEnemyType('nainen');
     this.loadEnemyType('cabinZombie');
+    this.loadEnemyType('mohikaani');
     this.load.tilemapTiledJSON('metsa', '/assets/metsa.json');
   }
 
@@ -298,7 +298,7 @@ export default class MetsaScene extends BaseScene {
     // --- Viholliset (spawnaa edetessä) ---
     if (!this.enemy1Spawned && this.player.x > 20 * TILE) {
       this.enemy1Spawned = true;
-      this.spawnEnemy('mies', 26, 30);
+      this.spawnEnemy('mohikaani', 26, 30);
     }
     if (!this.enemy2Spawned && this.player.x > 25 * TILE) {
       this.enemy2Spawned = true;

@@ -36,7 +36,8 @@ export default class KatakombiScene extends BaseScene {
     this.loadEnemyType('nainen');
     this.loadEnemyType('mies');
     this.loadEnemyType('cabinZombie');
-    this.loadEnemyType('mohikaani'); 
+    this.loadEnemyType('mohikaani');
+    this.loadEnemyType('miniZombie');
     this.load.tilemapTiledJSON('katakombit', '/assets/katakombit.json');
   }
 
@@ -269,11 +270,11 @@ export default class KatakombiScene extends BaseScene {
   //Luodaan viholliset, kun pelaaja tulee lähelle tiettyjä koordinaatteja. Spawnataan vain kerran per vihollinen.
     if (!this.enemy1Spawned && Phaser.Math.Distance.Between(this.player.x, this.player.y, 17 * TILE, 46 * TILE) < spawnDist) {
       this.enemy1Spawned = true;
-      this.spawnEnemy('mohikaani', 17, 46);
+      this.spawnEnemy('miniZombie', 17, 46);
     }
     if (!this.enemy2Spawned && Phaser.Math.Distance.Between(this.player.x, this.player.y, 38 * TILE, 57 * TILE) < spawnDist) {
       this.enemy2Spawned = true;
-      this.spawnEnemy('cabinZombie', 38, 57);
+      this.spawnEnemy('mohikaani', 38, 57);
     }
     if (!this.enemy3Spawned && Phaser.Math.Distance.Between(this.player.x, this.player.y, 21 * TILE, 25 * TILE) < spawnDist) {
       this.enemy3Spawned = true;
@@ -298,6 +299,10 @@ export default class KatakombiScene extends BaseScene {
     if (!this.enemy8Spawned && Phaser.Math.Distance.Between(this.player.x, this.player.y, 85 * TILE, 13 * TILE) < spawnDist) {
       this.enemy8Spawned = true;
       this.spawnEnemy('cabinZombie', 85, 13);
+    }
+    if (!this.enemy9Spawned && Phaser.Math.Distance.Between(this.player.x, this.player.y, 80 * TILE, 6 * TILE) < spawnDist) {
+      this.enemy9Spawned = true;
+      this.spawnEnemy('miniZombie', 80, 6);
     }
 
     this.updateEnemies();
