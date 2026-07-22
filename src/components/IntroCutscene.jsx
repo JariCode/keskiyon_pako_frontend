@@ -33,7 +33,7 @@ const SCENES = [
 const TYPE_SPEED = 45;
 const SCENE_PAUSE = 2200;
 
-export default function IntroCutscene({ onComplete }) {
+export default function IntroCutscene({ onComplete, sfxVolume = 1 }) {
   const [sceneIndex, setSceneIndex] = useState(0);
   const [typed, setTyped] = useState('');
   const [done, setDone] = useState(false);
@@ -48,7 +48,7 @@ export default function IntroCutscene({ onComplete }) {
     if (sceneIndex >= 4 && !knockRef.current) {
       const audio = new Audio('/assets/sfx/knocking.mp3');
       audio.loop = true;
-      audio.volume = 0.6;
+      audio.volume = 0.6 * sfxVolume;
       audio.play().catch(() => {});
       knockRef.current = audio;
     }

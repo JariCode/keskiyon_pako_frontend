@@ -120,7 +120,7 @@ function CabinInterior() {
   );
 }
 
-export default function MokkiReveal({ onComplete }) {
+export default function MokkiReveal({ onComplete, sfxVolume = 1 }) {
   const [phase, setPhase] = useState('opening');
   const [text, setText] = useState('');
   const timersRef = useRef([]);
@@ -148,7 +148,7 @@ export default function MokkiReveal({ onComplete }) {
   // Tulen ritinän (firewood.mp3) toisto ja hiljennys
   useEffect(() => {
     const audio = new Audio('/assets/sfx/firewood.mp3');
-    audio.volume = 0.6;
+    audio.volume = 0.6 * sfxVolume;
     audio.play().catch(() => {});
     firewoodRef.current = audio;
 

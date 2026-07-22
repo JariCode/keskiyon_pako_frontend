@@ -86,6 +86,10 @@ function App() {
 
   const isAnyRevealActive = zombieReveal || darknessReveal || cityReveal || roadblockReveal || mokkiReveal || katakombiReveal;
 
+  // Efektiivinen ääniefektien voimakkuus (mykistys -> 0). Välitetään cutscene-
+  // komponenteille jotka soittavat omia efektejään (koputus, karjaisu, siren jne.).
+  const effectiveSfxVolume = audioSettings.sfxMuted ? 0 : audioSettings.sfxVolume;
+
   // Taustamusiikin hallinta (intro.mp3 -> Intro, Asunto, Käytävä, Aula | bg-music.mp3 -> Kaupunki eteenpäin)
   useEffect(() => {
     let desiredTrack = '';
@@ -455,7 +459,7 @@ function App() {
 
       {view === 'auth' && <AuthForm onAuthSuccess={handleAuthSuccess} />}
 
-      {view === 'intro' && <IntroCutscene onComplete={handleIntroComplete} />}
+      {view === 'intro' && <IntroCutscene onComplete={handleIntroComplete} sfxVolume={effectiveSfxVolume} />}
 
       {view === 'game' && (
         <>
@@ -537,16 +541,16 @@ function App() {
             />
           )}
 
-          {zombieReveal && <ZombieReveal onComplete={handleRevealComplete} />}
+          {zombieReveal && <ZombieReveal onComplete={handleRevealComplete} sfxVolume={effectiveSfxVolume} />}
 
-          {darknessReveal && <PimeysReveal onComplete={handleDarknessComplete} />}
+          {darknessReveal && <PimeysReveal onComplete={handleDarknessComplete} sfxVolume={effectiveSfxVolume} />}
 
-          {cityReveal && <KaupunkiReveal onComplete={handleCityRevealComplete} />}
+          {cityReveal && <KaupunkiReveal onComplete={handleCityRevealComplete} sfxVolume={effectiveSfxVolume} />}
           
-          {roadblockReveal && <TiesulkuReveal onComplete={handleRoadblockRevealComplete} />}
+          {roadblockReveal && <TiesulkuReveal onComplete={handleRoadblockRevealComplete} sfxVolume={effectiveSfxVolume} />}
 
-          {mokkiReveal && <MokkiReveal onComplete={handleMokkiRevealComplete} />}
-          {katakombiReveal && <KatakombiReveal onComplete={handleKatakombiRevealComplete} />}
+          {mokkiReveal && <MokkiReveal onComplete={handleMokkiRevealComplete} sfxVolume={effectiveSfxVolume} />}
+          {katakombiReveal && <KatakombiReveal onComplete={handleKatakombiRevealComplete} sfxVolume={effectiveSfxVolume} />}
 
           {dead && (
             <DeathScreen

@@ -235,7 +235,9 @@ export default class ApartmentScene extends Phaser.Scene {
       // Oven koputus-ääni: alkaa heti, luuppaa (tiedosto lyhyt),
       // pysähtyy kun ovi avataan (openDoor).
       if (this.cache.audio.exists('knocking')) {
-        this.knockSound = this.sound.add('knocking', { loop: true, volume: 0.6 });
+        const kSfxMuted = this.registry.get('sfxMuted');
+        const kSfxVol = this.registry.get('sfxVolume');
+        this.knockSound = this.sound.add('knocking', { loop: true, volume: kSfxMuted ? 0 : 0.6 * (kSfxVol ?? 1) });
         this.knockSound.play();
       }
 
@@ -537,6 +539,21 @@ export default class ApartmentScene extends Phaser.Scene {
   }
 
   update(time, delta) {
+    // Päivitä koputus-ääni reaaliajassa asetuksista. TÄMÄ on ennen input-eston
+    // returnia, jotta mykistys/palautus reagoi heti myös silloin kun asetus-
+    // paneeli on auki (paneeli asettaa inputEnabled=false). Mykistys pysäyttää
+    // äänen kokonaan (ei jää looppaamaan äänettömänä), poisto käynnistää sen.
+    if (this.knockSound) {
+      const kMuted = this.registry.get('sfxMuted');
+      const kVol = this.registry.get('sfxVolume');
+      if (kMuted) {
+        if (this.knockSound.isPlaying) this.knockSound.stop();
+      } else {
+        this.knockSound.setVolume(0.6 * (kVol ?? 1));
+        if (!this.knockSound.isPlaying) this.knockSound.play();
+      }
+    }
+
     // Cutscene/reveal-suojaus: kun input on estetty (esim. zombie-reveal),
     // pysäytä liike joka framella. Kun input palautuu, nollaa näppäinten
     // isDown-tila kerran -- muuten cursors saattoi jäädä jumiin true:ksi

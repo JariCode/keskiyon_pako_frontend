@@ -161,7 +161,7 @@ function FallenZombieWoman() {
   );
 }
 
-export default function PimeysReveal({ onComplete }) {
+export default function PimeysReveal({ onComplete, sfxVolume = 1 }) {
   const [phase, setPhase] = useState('darkening');
   const [text, setText] = useState('');
   const timersRef = useRef([]);
@@ -188,7 +188,7 @@ export default function PimeysReveal({ onComplete }) {
   // Sähkökatko-efektin ääni
   useEffect(() => {
     const audio = new Audio('/assets/sfx/shortcircuit.mp3');
-    audio.volume = 0.6;
+    audio.volume = 0.6 * sfxVolume;
     audio.play().catch(() => {});
     shortcircuitRef.current = audio;
 

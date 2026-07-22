@@ -168,7 +168,7 @@ function ChaosCity() {
   );
 }
 
-export default function KaupunkiReveal({ onComplete }) {
+export default function KaupunkiReveal({ onComplete, sfxVolume = 1 }) {
   const [phase, setPhase] = useState('opening');
   const [text, setText] = useState('');
   const timersRef = useRef([]);
@@ -195,7 +195,7 @@ export default function KaupunkiReveal({ onComplete }) {
   // Sireeni-ääniefekti kohtauksen taustalle + pehmeä loppuhiljennys
   useEffect(() => {
     const audio = new Audio('/assets/sfx/siren.mp3');
-    audio.volume = 0.5;
+    audio.volume = 0.5 * sfxVolume;
     audio.play().catch(() => {});
     sirenRef.current = audio;
 

@@ -205,7 +205,7 @@ const TEXTS = [
 const TYPE_SPEED = 42;
 const SCENE_PAUSE = 2400;
 
-export default function TiesulkuReveal({ onComplete }) {
+export default function TiesulkuReveal({ onComplete, sfxVolume = 1 }) {
   const [phase, setPhase] = useState('opening');
   const [sceneIndex, setSceneIndex] = useState(0);
   const [typed, setTyped] = useState('');
@@ -221,7 +221,7 @@ export default function TiesulkuReveal({ onComplete }) {
   // Sotilasääni (military.mp3) ja sen hiljentyminen kohtauksen poistuessa
   useEffect(() => {
     const audio = new Audio('/assets/sfx/military.mp3');
-    audio.volume = 0.5;
+    audio.volume = 0.5 * sfxVolume;
     audio.loop = true;
     audio.play().catch(() => {});
     militaryRef.current = audio;

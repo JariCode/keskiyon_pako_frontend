@@ -213,7 +213,7 @@ function ZombieFigure() {
   );
 }
 
-export default function ZombieReveal({ onComplete }) {
+export default function ZombieReveal({ onComplete, sfxVolume = 1 }) {
   const [phase, setPhase] = useState('opening'); // opening | revealed | lunging
   const [text, setText] = useState('');
   const timersRef = useRef([]);
@@ -227,7 +227,7 @@ export default function ZombieReveal({ onComplete }) {
       setText('Se seisoo oviaukossa.');
         // Zombien karjaisu kerran (ei loopia) juuri kun se paljastuu hirviöksi.
       const roar = new Audio('/assets/sfx/roar.mp3');
-      roar.volume = 0.7;
+      roar.volume = 0.7 * sfxVolume;
       roar.play().catch(() => {});
       roarRef.current = roar;
     }, 1700));

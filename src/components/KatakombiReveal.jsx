@@ -100,7 +100,7 @@ function CatacombInterior() {
   );
 }
 
-export default function KatakombiReveal({ onComplete }) {
+export default function KatakombiReveal({ onComplete, sfxVolume = 1 }) {
   const [phase, setPhase] = useState('opening');
   const [text, setText] = useState('');
   const timersRef = useRef([]);
@@ -128,8 +128,8 @@ export default function KatakombiReveal({ onComplete }) {
   // Sama taustamusiikki kuin introssa (intro.mp3), soi vain tämän
   // cutscenen ajan ja hiljenee kun cutscene poistuu.
   useEffect(() => {
-    const audio = new Audio('/assets/audio/intro.mp3');
-    audio.volume = 0.7;
+    const audio = new Audio('/assets/sfx/katakombi.mp3');
+    audio.volume = 0.7 * sfxVolume;
     audio.loop = true;
     audio.play().catch(() => {});
     musicRef.current = audio;
