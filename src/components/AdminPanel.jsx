@@ -7,26 +7,18 @@ import {
 } from '../api/authApi';
 import './AdminPanel.css';
 
-// Pelin kohtaukset: näyttönimi, scene-luokka, spawn-piste ja alueen tunnus.
+// Pelin kohtaukset: näyttönimi, scene-luokka, spawn-piste, alueen tunnus ja
+// oletusvarustus (mitä pelaajalla kuuluisi siinä kohdassa peliä olla).
 const SCENES = [
-  { label: 'Asunto', scene: 'ApartmentScene', spawn: 'kaytava', area: 'asunto' },
-  { label: 'Käytävä', scene: 'KaytavaScene', spawn: 'asunto', area: 'kaytava' },
-  { label: 'Aula', scene: 'AulaScene', spawn: 'kaytava', area: 'aula' },
-  { label: 'Kaupunki', scene: 'KaupunkiScene', spawn: 'aula', area: 'kaupunki' },
-  { label: 'Metsä', scene: 'MetsaScene', spawn: 'kaupunki', area: 'metsa' },
-  { label: 'Mökki', scene: 'MokkiScene', spawn: 'metsa', area: 'mokki' },
-  { label: 'Hautausmaa', scene: 'HautausmaaScene', spawn: 'mokki', area: 'hautausmaa' },
-  { label: 'Katakombi', scene: 'KatakombiScene', spawn: 'hautausmaa', area: 'katakombi' },
-  { label: 'Kirkko', scene: 'KirkkoScene', spawn: 'katakombi', area: 'kirkko' },
-];
-
-const KITS = [
-  { label: 'Tyhjä', items: [] },
-  { label: 'Maila', items: ['maila'] },
-  { label: 'Lamppu', items: ['taskulamppu'] },
-  { label: 'Lamppu + maila', items: ['taskulamppu', 'maila'] },
-  { label: 'Lamppu + kirves', items: ['taskulamppu', 'kirves'] },
-  { label: 'Kaikki', items: ['taskulamppu', 'maila', 'kirves'] },
+  { label: 'Asunto', scene: 'ApartmentScene', spawn: 'kaytava', area: 'asunto', items: [] },
+  { label: 'Käytävä', scene: 'KaytavaScene', spawn: 'asunto', area: 'kaytava', items: ['maila'] },
+  { label: 'Aula', scene: 'AulaScene', spawn: 'kaytava', area: 'aula', items: ['taskulamppu', 'maila'] },
+  { label: 'Kaupunki', scene: 'KaupunkiScene', spawn: 'aula', area: 'kaupunki', items: ['taskulamppu', 'maila'] },
+  { label: 'Metsä', scene: 'MetsaScene', spawn: 'kaupunki', area: 'metsa', items: ['taskulamppu', 'maila'] },
+  { label: 'Mökki', scene: 'MokkiScene', spawn: 'metsa', area: 'mokki', items: ['taskulamppu', 'maila'] },
+  { label: 'Hautausmaa', scene: 'HautausmaaScene', spawn: 'mokki', area: 'hautausmaa', items: ['taskulamppu', 'kirves'] },
+  { label: 'Katakombi', scene: 'KatakombiScene', spawn: 'hautausmaa', area: 'katakombi', items: ['taskulamppu', 'kirves'] },
+  { label: 'Kirkko', scene: 'KirkkoScene', spawn: 'katakombi', area: 'kirkko', items: ['taskulamppu', 'kirves'] },
 ];
 
 function formatTime(iso) {
@@ -150,18 +142,14 @@ export default function AdminPanel({ open, onClose, onJump, onSetSave, getSave }
     const save = {
       ...current,
       currentArea: target.area,
-      inventory: current.inventory || [],
+      // Kohtauksen oletusvarustus: se mitä pelaajalla kuuluisi siinä
+      // kohdassa peliä olla, jotta hyökkääminen yms. toimii heti.
+      inventory: [...target.items],
       progress: current.progress || {},
     };
     onSetSave(save, target.area);
     onJump(target.scene, target.spawn);
     onClose();
-  };
-
-  const applyKit = (items) => {
-    const current = getSave?.() || {};
-    onSetSave({ ...current, inventory: [...items] }, current.currentArea);
-    showNotice(`Varusteet: ${items.join(', ') || 'tyhjä'}`);
   };
 
   const currentSave = getSave?.() || {};
@@ -287,28 +275,22 @@ export default function AdminPanel({ open, onClose, onJump, onSetSave, getSave }
           {tab === 'scenes' && (
             <div className="adm-scenes">
               <div className="adm-sub">Hyppää kohtaukseen</div>
+              <div className="adm-muted adm-current">
+                Kohtaus alkaa sen oletusvarustuksella.
+              </div>
               <div className="adm-scene-grid">
                 {SCENES.map((s) => (
                   <button
                     key={s.scene}
-                    className={`adm-btn ${currentSave.currentArea === s.area ? 'adm-btn-primary' : ''}`}
+                    className={`adm-scene-btn ${currentSave.currentArea === s.area ? 'adm-scene-btn-active' : ''}`}
                     onClick={() => jumpToScene(s)}
                   >
-                    {s.label}
+                    <span className="adm-scene-name">{s.label}</span>
+                    <span className="adm-scene-items">
+                      {s.items.length ? s.items.join(' + ') : 'paljain käsin'}
+                    </span>
                   </button>
                 ))}
-              </div>
-
-              <div className="adm-sub">Varusteet</div>
-              <div className="adm-scene-grid">
-                {KITS.map((k) => (
-                  <button key={k.label} className="adm-btn adm-btn-sm" onClick={() => applyKit(k.items)}>
-                    {k.label}
-                  </button>
-                ))}
-              </div>
-              <div className="adm-muted adm-current">
-                Nyt: {(currentSave.inventory || []).join(', ') || '—'}
               </div>
             </div>
           )}

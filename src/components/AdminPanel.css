@@ -273,13 +273,53 @@
 
 .adm-scene-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 6px;
   margin-bottom: 16px;
 }
 
+/* Kohtausnappi: nimi + oletusvarustus allekkain */
+.adm-scene-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 8px 12px;
+  font-family: inherit;
+  color: #cfd3d8;
+  background: #1b1e23;
+  border: 1px solid #2e323a;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+}
+.adm-scene-btn:hover {
+  background: #262a31;
+  border-color: #454b56;
+}
+.adm-scene-btn-active {
+  color: #f0e2ae;
+  background: #3a3116;
+  border-color: #6b5a26;
+}
+
+.adm-scene-name {
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+}
+
+.adm-scene-items {
+  font-size: 0.85rem;
+  color: #7a8089;
+  letter-spacing: 0.03em;
+}
+.adm-scene-btn-active .adm-scene-items {
+  color: #b0a172;
+}
+
 .adm-current {
   font-size: 0.95rem;
+  margin-bottom: 10px;
 }
 
 /* ---------- Vahvistusdialogi ---------- */
