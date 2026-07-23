@@ -248,6 +248,24 @@ export default class ApartmentScene extends Phaser.Scene {
         .setDepth(11)
         .setVisible(false);
 
+      // Vihjeteksti: "Avaa ovi (E)" (sama tyyli kuin muiden scenejen ovilla).
+      // Origo (1, 0) eli teksti kasvaa vasemmalle ovesta, koska ovi on
+      // kartan oikeassa reunassa - keskitetty teksti leikkautuisi ruudun
+      // ulkopuolelle (sama syy miksi knockText on siirretty vasemmalle).
+      this.doorHint = this.add.text(doorPos.x, doorPos.y + 24, 'Avaa ovi (E)', {
+        fontSize: '16px',
+        color: '#fff2c0',
+        fontStyle: 'bold',
+        backgroundColor: '#000000cc',
+        padding: { x: 8, y: 4 },
+        stroke: '#000000',
+        strokeThickness: 3,
+      })
+        .setOrigin(1, 0)
+        .setDepth(12)
+        .setScrollFactor(1)
+        .setVisible(false);
+
       this.time.addEvent({
         delay: 1500,
         loop: true,
@@ -638,6 +656,7 @@ export default class ApartmentScene extends Phaser.Scene {
       const distToDoor = Phaser.Math.Distance.Between(
         this.player.x, this.player.y, this.door.x, this.door.y
       );
+      this.doorHint?.setVisible(distToDoor < 70);
       if (distToDoor < 70 && eJustPressed) {
         this.openDoor();
       }
@@ -713,6 +732,8 @@ export default class ApartmentScene extends Phaser.Scene {
     this.door = null;
     this.knockText?.destroy();
     this.knockText = null;
+    this.doorHint?.destroy();
+    this.doorHint = null;
     this.playDoorSound();
     this.emitHint('');
 
