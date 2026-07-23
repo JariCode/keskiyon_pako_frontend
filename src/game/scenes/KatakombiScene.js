@@ -166,13 +166,13 @@ export default class KatakombiScene extends BaseScene {
     // --- Soihtujen valo: yksi pyöreä hehku per valonlähde (ADD-blend,
     // pimeyden päällä). Pisteet poimittu kartan Valot-tiilien klustereista. ---
     this.torchLights = [
-      { x: 25.0 * TILE + 16, y: 8.0 * TILE + 16 },
-      { x: 83.5 * TILE + 16, y: 10.0 * TILE + 16 },
-      { x: 88.0 * TILE + 16, y: 26.0 * TILE + 16 },
-      { x: 12.5 * TILE + 16, y: 29.0 * TILE + 16 },
-      { x: 19.5 * TILE + 16, y: 29.0 * TILE + 16 },
-      { x: 21.5 * TILE + 16, y: 46.0 * TILE + 16 },
-      { x: 60.5 * TILE + 16, y: 55.0 * TILE + 16 },
+      { x: 25 * TILE + 16, y: 8.0 * TILE + 16 },
+      { x: 83 * TILE + 16, y: 10.0 * TILE + 16 },
+      { x: 88 * TILE + 16, y: 26.0 * TILE + 16 },
+      { x: 12 * TILE + 16, y: 29.0 * TILE + 16 },
+      { x: 19 * TILE + 16, y: 29.0 * TILE + 16 },
+      { x: 21 * TILE + 16, y: 46.0 * TILE + 16 },
+      { x: 60 * TILE + 16, y: 55.0 * TILE + 16 },
     ];
     this.torchLightGfx = this.add.graphics();
     this.torchLightGfx.setScrollFactor(1);
