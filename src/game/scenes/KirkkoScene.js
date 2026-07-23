@@ -208,6 +208,19 @@ export default class KirkkoScene extends BaseScene {
 
     const glow = this.add.ellipse(0, 0, w * 1.3, h * 1.4, 0x6688cc, 0.12);
     g.add(glow);
+
+    // Oma hohto joka näkyy pimeyden LÄPI (sama tekniikka kuin soihduilla
+    // Katakombissa/Hautausmaalla): ADD-blend, korkeampi depth kuin darkGfx (8),
+    // jotta kryptan aukko erottuu vaikka pelaaja kävelisi kauas taskulampun
+    // valokeilan ulkopuolelle.
+    this.cryptGlowGfx = this.add.graphics();
+    this.cryptGlowGfx.setScrollFactor(1);
+    this.cryptGlowGfx.setDepth(9);
+    this.cryptGlowGfx.setBlendMode(Phaser.BlendModes.ADD);
+    this.cryptGlowGfx.fillStyle(0x6688ff, 0.14);
+    this.cryptGlowGfx.fillCircle(cx, cy, 60);
+    this.cryptGlowGfx.fillStyle(0x99aaff, 0.5);
+    this.cryptGlowGfx.fillCircle(cx, cy, 12);
   }
 
   update(time, delta) {
