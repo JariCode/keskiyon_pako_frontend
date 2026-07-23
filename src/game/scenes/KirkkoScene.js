@@ -121,8 +121,8 @@ export default class KirkkoScene extends BaseScene {
 
     // --- Pelaaja: saapuu katakombeista kryptan portaita pitkin (portaat 2,8) ---
     const stairsX = 2 * TILE + 16;
-    const stairsY = 8 * TILE + 16;
-    const startX = 4 * TILE + 16;
+    const stairsY = 7 * TILE + 16;
+    const startX = 3 * TILE + 16;
     const startY = 8 * TILE + 16;
 
     this.playerShadow = this.add.ellipse(startX, startY + 20, 40, 16, 0x000000, 0.4);
@@ -173,6 +173,12 @@ export default class KirkkoScene extends BaseScene {
     this.heldFlashlight = null;
     this.enableFlashlightBeam();
 
+    // --- Energiapussi (HP täyteen), luodaan kerran alustuksessa ---
+    this.pouchTaken = this.isPouchTaken();
+    if (!this.pouchTaken) {
+      this.createPouch(24 * TILE + 16, 19 * TILE + 16);
+    }
+
     this.emitHint('Kirkko. Alttarin luona jotain liikkuu.');
     this.emitStats();
 
@@ -186,41 +192,30 @@ export default class KirkkoScene extends BaseScene {
     this.game.events.emit('game-event', { type: 'checkpoint-reached', area: 'kirkko' });
   }
 
-  // Piirtää pienen kuopan/portaat josta pelaaja on juuri noussut kryptasta
-  // kirkon puolelle. Sama tyyli kuin BaseScenen buildStairs, mutta oma
-  // sijaintinsa (ei kiinteä x10,y3.5 kuten muualla).
+  // Piirtää portaat samalla tyylillä kuin BaseScenen buildStairs (Aula/Käytävä),
+  // mutta omaan sijaintiinsa (2,8) kiinteän x10,y3.5:n sijaan.
   buildCryptStairs(cx, cy) {
-    const g = this.add.container(cx, cy + 8);
-    g.setDepth(1);
+    const g = this.add.container(cx, cy);
+    g.setDepth(3);
 
-    const w = TILE * 1.4;
-    const h = TILE * 0.9;
+    const w = 2.5 * TILE;
+    const h = 3 * TILE;
 
-    const hole = this.add.ellipse(0, 0, w, h, 0x0a0806, 0.9);
-    g.add(hole);
+    const base = this.add.rectangle(0, 0, w, h, 0x1a140c);
+    g.add(base);
 
-    const steps = 4;
+    const steps = 6;
+    const stepW = w / steps;
     for (let i = 0; i < steps; i++) {
-      const shade = Phaser.Display.Color.GetColor(50 + i * 10, 40 + i * 8, 28 + i * 6);
-      const step = this.add.ellipse(0, -6 + i * 4, w - i * 8, h * 0.5, shade, 0.8);
+      const shade = Phaser.Display.Color.GetColor(58 + i * 8, 46 + i * 6, 30 + i * 4);
+      // peilattu: levenee vasemmalle (i kasvaa -> vasemmalle), sama kuin Aulassa
+      const step = this.add.rectangle(w / 2 - stepW / 2 - i * stepW, 0, stepW - 1, h - i * 6, shade);
+      step.setStrokeStyle(1, 0x0e0a06);
       g.add(step);
     }
 
-    const glow = this.add.ellipse(0, 0, w * 1.3, h * 1.4, 0x6688cc, 0.12);
+    const glow = this.add.ellipse(-6, 0, w * 0.8, h * 0.7, 0x6688cc, 0.15);
     g.add(glow);
-
-    // Oma hohto joka näkyy pimeyden LÄPI (sama tekniikka kuin soihduilla
-    // Katakombissa/Hautausmaalla): ADD-blend, korkeampi depth kuin darkGfx (8),
-    // jotta kryptan aukko erottuu vaikka pelaaja kävelisi kauas taskulampun
-    // valokeilan ulkopuolelle.
-    this.cryptGlowGfx = this.add.graphics();
-    this.cryptGlowGfx.setScrollFactor(1);
-    this.cryptGlowGfx.setDepth(9);
-    this.cryptGlowGfx.setBlendMode(Phaser.BlendModes.ADD);
-    this.cryptGlowGfx.fillStyle(0x6688ff, 0.14);
-    this.cryptGlowGfx.fillCircle(cx, cy, 60);
-    this.cryptGlowGfx.fillStyle(0x99aaff, 0.5);
-    this.cryptGlowGfx.fillCircle(cx, cy, 12);
   }
 
   update(time, delta) {
@@ -313,6 +308,21 @@ export default class KirkkoScene extends BaseScene {
     }
     if (this.axeCollected) {
       this.updateHeldAxe();
+    }
+
+    // --- Energiapussin poiminta (E) + kimallus/vihje ---
+    {
+      const eJustPressed = this.keyE.isDown && !this.eWasDown;
+      if (eJustPressed) {
+        this.tryCollectPouch();
+      }
+    }
+    if (!this.pouchTaken && this.pouch) {
+      this.updatePouchSparkle(time);
+      const dPouch = Phaser.Math.Distance.Between(
+        this.player.x, this.player.y, this.pouchX, this.pouchY
+      );
+      this.pouchHint?.setVisible(dPouch < 50);
     }
 
     // Taskulampun valokeila + lamppu kädessä
