@@ -477,17 +477,19 @@ export default class KaytavaScene extends Phaser.Scene {
       });
     }
 
-    // Maila heilahtaa
-    const swingFrom = { alas: 55, ylos: 235, vasen: 145, oikea: 35 }[dir];
-    const swingTo = swingFrom - 90;
-    this.tweens.killTweensOf(this.heldBat);
-    this.heldBat.setAngle(swingFrom);
+    // Maila heilahtaa. Tweenataan this.weaponSwing-lukua (ei suoraan
+    // heldBat.anglea), koska updateHeldBat asettaa suuntakulman joka
+    // framella — se lisää tämän offsetin siihen sen sijaan että
+    // ylikirjoittaisi sen.
+    this.tweens.killTweensOf(this);
+    this.weaponSwing = 0;
     this.tweens.add({
-      targets: this.heldBat,
-      angle: swingTo,
+      targets: this,
+      weaponSwing: -90,
       duration: 90,
       yoyo: true,
       ease: 'Quad.easeOut',
+      onComplete: () => { this.weaponSwing = 0; },
     });
 
     // Lyöntiefekti: valkoinen kaari-välähdys mailan eteen
@@ -724,7 +726,7 @@ export default class KaytavaScene extends Phaser.Scene {
     };
     const o = offsets[this.lastDirection];
     this.heldBat.setPosition(this.player.x + o.x, this.player.y + o.y);
-    this.heldBat.setAngle(o.angle);
+    this.heldBat.setAngle(o.angle + (this.weaponSwing || 0));
     this.heldBat.setDepth(o.depth);
   }
 

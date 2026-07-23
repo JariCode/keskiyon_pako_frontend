@@ -380,7 +380,7 @@ export default class ApartmentScene extends Phaser.Scene {
 
     const o = offsets[this.lastDirection];
     this.heldBat.setPosition(this.player.x + o.x, this.player.y + o.y);
-    this.heldBat.setAngle(o.angle);
+    this.heldBat.setAngle(o.angle + (this.weaponSwing || 0));
     this.heldBat.setDepth(o.depth);
   }
 
@@ -876,21 +876,19 @@ export default class ApartmentScene extends Phaser.Scene {
     }
 
     if (this.batCollected && this.heldBat) {
-      // Maila heilahtaa kaarelle ja takaisin
-      const dir = this.lastDirection;
-      const swingFrom = {
-        alas: 55, ylos: 235, vasen: 145, oikea: 35,
-      }[dir];
-      const swingTo = swingFrom - 90; // huitaisu
-
-      this.tweens.killTweensOf(this.heldBat);
-      this.heldBat.setAngle(swingFrom);
+      // Maila heilahtaa kaarelle ja takaisin. Tweenataan this.weaponSwing-
+      // lukua (ei suoraan heldBat.anglea), koska updateHeldBat asettaa
+      // suuntakulman joka framella — se lisää tämän offsetin siihen sen
+      // sijaan että ylikirjoittaisi sen.
+      this.tweens.killTweensOf(this);
+      this.weaponSwing = 0;
       this.tweens.add({
-        targets: this.heldBat,
-        angle: swingTo,
+        targets: this,
+        weaponSwing: -90,
         duration: 90,
         yoyo: true,
         ease: 'Quad.easeOut',
+        onComplete: () => { this.weaponSwing = 0; },
       });
     } else {
       // Paljain käsin: hahmo nytkähtää zombieta kohti

@@ -213,7 +213,7 @@ export default class BaseScene extends Phaser.Scene {
     };
     const o = offsets[this.lastDirection];
     this.heldBat.setPosition(this.player.x + o.x, this.player.y + o.y);
-    this.heldBat.setAngle(o.angle);
+    this.heldBat.setAngle(o.angle + (this.weaponSwing || 0));
     this.heldBat.setDepth(o.depth);
   }
 
@@ -358,7 +358,7 @@ export default class BaseScene extends Phaser.Scene {
     };
     const o = offsets[this.lastDirection];
     this.heldAxe.setPosition(this.player.x + o.x, this.player.y + o.y);
-    this.heldAxe.setAngle(o.angle);
+    this.heldAxe.setAngle(o.angle + (this.weaponSwing || 0));
     this.heldAxe.setFlipX(false);
     this.heldAxe.setFlipY(o.flipY);
     this.heldAxe.setDepth(o.depth);
@@ -717,17 +717,20 @@ export default class BaseScene extends Phaser.Scene {
       });
     }
     // Heilauta aktiivista asetta: kirves jos se on kädessä, muuten maila.
+    // Tweenataan this.weaponSwing-lukua (ei suoraan weapon.anglea), koska
+    // updateHeldBat/updateHeldAxe asettavat suuntakulman joka framella —
+    // ne lisäävät tämän offsetin siihen sen sijaan että ylikirjoittaisivat sen.
     const weapon = (this.axeCollected && this.heldAxe) ? this.heldAxe : this.heldBat;
-    const swingFrom = { alas: 55, ylos: 235, vasen: 145, oikea: 35 }[dir];
     if (weapon) {
-      this.tweens.killTweensOf(weapon);
-      weapon.setAngle(swingFrom);
+      this.tweens.killTweensOf(this);
+      this.weaponSwing = 0;
       this.tweens.add({
-        targets: weapon,
-        angle: swingFrom - 90,
+        targets: this,
+        weaponSwing: -90,
         duration: 90,
         yoyo: true,
         ease: 'Quad.easeOut',
+        onComplete: () => { this.weaponSwing = 0; },
       });
     }
     const off = {
