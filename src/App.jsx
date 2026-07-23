@@ -90,13 +90,13 @@ function App() {
   // komponenteille jotka soittavat omia efektejään (koputus, karjaisu, siren jne.).
   const effectiveSfxVolume = audioSettings.sfxMuted ? 0 : audioSettings.sfxVolume;
 
-  // Taustamusiikin hallinta (intro.mp3 -> Intro, Asunto, Käytävä, Aula | bg-music.mp3 -> Kaupunki eteenpäin)
+  // Taustamusiikin hallinta (intro.mp3 -> Intro, Asunto, Käytävä, Aula, DeathScreen | bg-music.mp3 -> Kaupunki eteenpäin)
   useEffect(() => {
     let desiredTrack = '';
     const currentArea = checkpoint || saveRef.current?.currentArea || 'asunto';
     const introCheckpoints = ['asunto', 'kaytava', 'aula'];
 
-    if (view === 'intro' || (view === 'game' && introCheckpoints.includes(currentArea))) {
+    if (dead || view === 'intro' || (view === 'game' && introCheckpoints.includes(currentArea))) {
       desiredTrack = '/assets/audio/intro.mp3';
     } else if (view === 'game') {
       desiredTrack = '/assets/audio/bg-music.mp3';
@@ -157,7 +157,7 @@ function App() {
         }
       }
     };
-  }, [view, checkpoint, audioSettings]);
+  }, [view, checkpoint, audioSettings, dead]);
 
   // Musiikin vaimennus Reveal-animaatioiden ajaksi
   useEffect(() => {

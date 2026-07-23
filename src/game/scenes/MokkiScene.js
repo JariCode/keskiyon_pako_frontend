@@ -46,6 +46,10 @@ export default class MokkiScene extends BaseScene {
     this.eWasDown = false;
     this.spaceWasDown = false;
     this.lastStatsJson = null;
+    // Nollataan joka create()-kutsulla (Yritä uudelleen käyttää samaa scene-
+    // instanssia stop+start-kutsulla, ei luo uutta) - muuten tämä jäisi
+    // true:ksi ensimmäisen kuoleman jälkeen eikä game-over voisi laueta enää.
+    this.gameOverTriggered = false;
 
     this.enemies = [];
     this.enemy1Spawned = false;
