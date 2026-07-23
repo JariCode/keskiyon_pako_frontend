@@ -584,6 +584,7 @@ export default class BaseScene extends Phaser.Scene {
     const def = BaseScene.ENEMY_TYPES[type];
     if (!def) return;
     this.createEnemyAnimations(type);
+    this.playZombieSound();
 
     const x = tileX * TILE;
     const y = tileY * TILE;
@@ -678,6 +679,7 @@ export default class BaseScene extends Phaser.Scene {
     e.sprite.body.setVelocity(0, 0);
     e.hpText.destroy();
     this.spawnBloodPool(deathX, deathY);
+    this.playDeathSound();
     // dead-animaatio, sitten häivytys
     e.sprite.anims.play(`${e.type}-dead`, true);
     e.sprite.once('animationcomplete', () => {
@@ -807,6 +809,22 @@ export default class BaseScene extends Phaser.Scene {
       const sfxMuted = this.registry.get('sfxMuted');
       const sfxVol = this.registry.get('sfxVolume');
       this.sound.play('crack', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
+  }
+
+  playZombieSound() {
+    if (this.cache.audio.exists('zombie')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('zombie', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
+  }
+
+  playDeathSound() {
+    if (this.cache.audio.exists('death')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('death', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
     }
   }
 

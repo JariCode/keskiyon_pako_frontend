@@ -34,6 +34,8 @@ export default class AulaScene extends BaseScene {
     this.load.audio('collect', '/assets/sfx/collect.mp3');
     this.load.audio('door', '/assets/sfx/door.mp3');
     this.load.audio('level', '/assets/sfx/level.mp3');
+    this.load.audio('zombie', '/assets/sfx/zombie.mp3');
+    this.load.audio('death', '/assets/sfx/death.mp3');
     this.load.tilemapTiledJSON('aula', '/assets/aula.json');
   }
 

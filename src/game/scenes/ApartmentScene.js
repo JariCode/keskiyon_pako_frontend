@@ -55,6 +55,8 @@ export default class ApartmentScene extends Phaser.Scene {
     this.load.audio('collect', '/assets/sfx/collect.mp3');
     this.load.audio('door', '/assets/sfx/door.mp3');
     this.load.audio('level', '/assets/sfx/level.mp3');
+    this.load.audio('zombie', '/assets/sfx/zombie.mp3');
+    this.load.audio('death', '/assets/sfx/death.mp3');
     this.load.audio('knocking', '/assets/sfx/knocking.mp3');
     this.load.tilemapTiledJSON('asunto', '/assets/asunto.json');
   }
@@ -753,6 +755,7 @@ export default class ApartmentScene extends Phaser.Scene {
   }
 
   spawnZombie() {
+    this.playZombieSound();
     // Zombie-frame on 480x480, hahmo alaosassa. Skaala 0.22 -> ~105px korkea.
     // Jalat ovat framessa ~y470, keskitetty x240. Skaalattuna jalat ovat
     // spriten y-keskipisteestä n. (470-240)*0.22 ≈ 50px alaspäin.
@@ -888,6 +891,22 @@ export default class ApartmentScene extends Phaser.Scene {
     }
   }
 
+  playZombieSound() {
+    if (this.cache.audio.exists('zombie')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('zombie', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
+  }
+
+  playDeathSound() {
+    if (this.cache.audio.exists('death')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('death', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
+  }
+
   doPlayerAttackMotion() {
     // Lyöntiääni (soi joka iskulla)
     if (this.cache.audio.exists('punch')) {
@@ -997,6 +1016,7 @@ export default class ApartmentScene extends Phaser.Scene {
     this.zombie.body.setVelocity(0, 0);
     this.zombie.anims.play('z-kuolee', true);
     this.zombieHPText.destroy();
+    this.playDeathSound();
 
     const dyingZombie = this.zombie;
     const dyingShadow = this.zombieShadow;

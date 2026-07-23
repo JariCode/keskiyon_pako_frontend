@@ -30,6 +30,8 @@ export default class KaytavaScene extends Phaser.Scene {
     this.load.audio('collect', '/assets/sfx/collect.mp3');
     this.load.audio('door', '/assets/sfx/door.mp3');
     this.load.audio('level', '/assets/sfx/level.mp3');
+    this.load.audio('zombie', '/assets/sfx/zombie.mp3');
+    this.load.audio('death', '/assets/sfx/death.mp3');
     this.load.spritesheet('zw-idle', '/assets/spritesheets/zombie-woman-idle.png', { frameWidth: 32, frameHeight: 32 });
     this.load.spritesheet('zw-walk', '/assets/spritesheets/zombie-woman-walk.png', { frameWidth: 32, frameHeight: 32 });
     this.load.spritesheet('zw-attack', '/assets/spritesheets/zombie-woman-attack.png', { frameWidth: 32, frameHeight: 32 });
@@ -355,6 +357,7 @@ export default class KaytavaScene extends Phaser.Scene {
   }
 
   spawnZombie() {
+    this.playZombieSound();
     const zx = 19.5 * TILE;
     const zy = 26 * TILE;
     this.zombieShadow = this.add.ellipse(zx, zy + 22, 34, 13, 0x000000, 0.45);
@@ -449,6 +452,22 @@ export default class KaytavaScene extends Phaser.Scene {
       const sfxMuted = this.registry.get('sfxMuted');
       const sfxVol = this.registry.get('sfxVolume');
       this.sound.play('level', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
+  }
+
+  playZombieSound() {
+    if (this.cache.audio.exists('zombie')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('zombie', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
+  }
+
+  playDeathSound() {
+    if (this.cache.audio.exists('death')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('death', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
     }
   }
 
@@ -562,6 +581,7 @@ export default class KaytavaScene extends Phaser.Scene {
     this.zombie.body.setVelocity(0, 0);
     this.zombie.anims.play('zw-kuolee', true);
     this.zombieHPText.destroy();
+    this.playDeathSound();
     const dyingZombie = this.zombie;
     const dyingShadow = this.zombieShadow;
     const deathX = this.zombie.x;

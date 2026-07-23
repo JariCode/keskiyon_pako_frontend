@@ -34,6 +34,8 @@ export default class KaupunkiScene extends BaseScene {
     this.load.audio('collect', '/assets/sfx/collect.mp3');
     this.load.audio('door', '/assets/sfx/door.mp3');
     this.load.audio('level', '/assets/sfx/level.mp3');
+    this.load.audio('zombie', '/assets/sfx/zombie.mp3');
+    this.load.audio('death', '/assets/sfx/death.mp3');
     this.load.spritesheet('troll', '/assets/spritesheets/Corvinian_Troll-Sheet.png', {
       frameWidth: 64,
       frameHeight: 64,
@@ -322,6 +324,7 @@ export default class KaupunkiScene extends BaseScene {
 
   spawnTroll(tileX, tileY) {
     this.createTrollAnimations();
+    this.playZombieSound();
     const x = tileX * TILE;
     const y = tileY * TILE;
 
@@ -404,6 +407,7 @@ export default class KaupunkiScene extends BaseScene {
     const deathY = this.troll.y + 20;
     this.troll.body.setVelocity(0, 0);
     this.trollHPText.destroy();
+    this.playDeathSound();
 
     // Ei kaatumis-framea -> häivytetään + verilammikko
     this.time.delayedCall(300, () => this.spawnBloodPool(deathX, deathY));
