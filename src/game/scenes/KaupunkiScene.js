@@ -339,7 +339,7 @@ export default class KaupunkiScene extends BaseScene {
     this.troll.setDepth(7);
     this.troll.setScale(2); // Zombien koko
     this.troll.body.setSize(28, 30);
-    this.troll.body.setOffset(18, 30);
+    this.troll.body.setOffset(18, -70);
     this.troll.anims.play('troll-kavele', true);
 
     // Troll törmää samoihin esteisiin kuin pelaaja

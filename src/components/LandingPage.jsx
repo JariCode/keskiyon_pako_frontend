@@ -7,7 +7,7 @@ export default function LandingPage({ onStart }) {
       
       {/* Hahmon pään yläosa ja mustat aurinkolasit otsikon yläpuolella */}
       <div className="landing-character-crop">
-        <img src="/public/assets/landing-hahmo.png" alt="Hahmo" className="character-img" />
+        <img src="/public/assets/img/landing-hahmo.png" alt="Hahmo" className="character-img" />
       </div>
 
       <h1 className="landing-title">KESKIYÖN PAKO</h1>

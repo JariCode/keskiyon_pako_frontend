@@ -364,7 +364,7 @@ export default class KaytavaScene extends Phaser.Scene {
     this.zombieShadow.setDepth(8);
     this.zombie = this.physics.add.sprite(zx, zy, 'zw-idle', 0);
     this.zombie.setDepth(9);
-    this.zombie.setScale(2);
+    this.zombie.setScale(1.9);
     this.zombie.body.setSize(16, 14);
     this.zombie.body.setOffset(8, 16);
     this.zombie.body.setCollideWorldBounds(true);
@@ -372,7 +372,7 @@ export default class KaytavaScene extends Phaser.Scene {
     this.physics.add.collider(this.zombie, this.wallsLayer);
     this.zombieHP = 34;
     this.zombieAlive = true;
-    this.zombieHPText = this.add.text(zx - 20, zy -75, 'HP: 34', textStyles.hp).setDepth(11);
+    this.zombieHPText = this.add.text(zx - 20, zy -70, 'HP: 34', textStyles.hp).setDepth(11);
     this.cameras.main.flash(300, 60, 0, 0);
     this.emitHint('Jokin tulee käytävässä! Hakkaa se mailalla (SPACE).', 'danger');
   }

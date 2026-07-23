@@ -495,9 +495,9 @@ export default class BaseScene extends Phaser.Scene {
         dead:   { key: 'z-nainen-dead',   file: 'zombie-woman-dead.png',   frames: 8 },
       },
       frameWidth: 32, frameHeight: 32,
-      scale: 2.2, hp: 55, speed: 60,
+      scale: 1.9, hp: 55, speed: 60,
       bodySize: [16, 14], bodyOffset: [8, 16],
-      shadow: [34, 13, 22], hpOffset: -75,
+      shadow: [34, 13, 22], hpOffset: -70,
   },
     cabinZombie: {
       sheets: {
@@ -510,7 +510,7 @@ export default class BaseScene extends Phaser.Scene {
       frameWidth: 64, frameHeight: 64,
       scale: 1, hp: 65, speed: 55,
       bodySize: [32, 28], bodyOffset: [16, 32],
-      shadow: [34, 13, 22], hpOffset: -75,
+      shadow: [34, 13, 22], hpOffset: -70,
     },
     mohikaani: {
       sheets: {
@@ -523,7 +523,7 @@ export default class BaseScene extends Phaser.Scene {
       frameWidth: 64, frameHeight: 64,
       scale: 1, hp: 75, speed: 50,
       bodySize: [32, 28], bodyOffset: [16, 32],
-      shadow: [34, 13, 22], hpOffset: -75,
+      shadow: [34, 13, 22], hpOffset: -70,
     },
     tytto: {
       sheets: {
@@ -536,7 +536,7 @@ export default class BaseScene extends Phaser.Scene {
       frameWidth: 64, frameHeight: 64,
       scale: 1, hp: 45, speed: 60,
       bodySize: [32, 28], bodyOffset: [16, 32],
-      shadow: [34, 13, 22], hpOffset: -75,
+      shadow: [34, 13, 22], hpOffset: -70,
     },
     miniZombie: {
       sheets: {
@@ -549,7 +549,7 @@ export default class BaseScene extends Phaser.Scene {
       frameWidth: 64, frameHeight: 64,
       scale: 0.5, hp: 35, speed: 75,
       bodySize: [15, 13], bodyOffset: [7, 15],
-      shadow: [15, 6, 10], hpOffset: -75,
+      shadow: [15, 6, 10], hpOffset: -70,
     },
   
   };
