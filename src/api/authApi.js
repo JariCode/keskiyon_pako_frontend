@@ -89,3 +89,28 @@ export function updateAudioSettings({ musicVolume, sfxVolume, musicMuted, sfxMut
     body: JSON.stringify({ musicVolume, sfxVolume, musicMuted, sfxMuted }),
   });
 }
+
+// --- Admin (vaatii admin-roolin) ---
+
+export function adminGetUsers() {
+  return request('/admin/users', { method: 'GET' });
+}
+
+export function adminGetLogs({ userId, limit } = {}) {
+  const params = new URLSearchParams();
+  if (userId) params.set('userId', userId);
+  if (limit) params.set('limit', String(limit));
+  const query = params.toString() ? `?${params.toString()}` : '';
+  return request(`/admin/logs${query}`, { method: 'GET' });
+}
+
+export function adminChangeRole({ userId, role }) {
+  return request(`/admin/users/${userId}/role`, {
+    method: 'PATCH',
+    body: JSON.stringify({ role }),
+  });
+}
+
+export function adminDeleteUser({ userId }) {
+  return request(`/admin/users/${userId}`, { method: 'DELETE' });
+}

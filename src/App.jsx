@@ -10,6 +10,7 @@ import TiesulkuReveal from './components/TiesulkuReveal';
 import MokkiReveal from './components/MokkiReveal';
 import KatakombiReveal from './components/KatakombiReveal';
 import KirkkoReveal from './components/KirkkoReveal';
+import AdminPanel from './components/AdminPanel';
 import DeathScreen from './components/DeathScreen';
 import ProfilePanel from './components/ProfilePanel';
 import SettingsPanel from './components/SettingsPanel';
@@ -47,6 +48,16 @@ function GearIcon() {
   );
 }
 
+function ShieldIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none"
+      stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3l7 3v5.5c0 4.3-2.9 8.2-7 9.5-4.1-1.3-7-5.2-7-9.5V6l7-3z" />
+      <path d="M9.5 12l1.8 1.8 3.5-3.6" />
+    </svg>
+  );
+}
+
 function App() {
   const [view, setView] = useState('loading');
   const [user, setUser] = useState(null);
@@ -55,6 +66,7 @@ function App() {
   const [hint, setHint] = useState(null);
   const [profileOpen, setProfileOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [adminOpen, setAdminOpen] = useState(false);
   const [audioSettings, setAudioSettings] = useState({
     musicVolume: 0.7,
     sfxVolume: 0.5,
@@ -353,6 +365,13 @@ function App() {
 
   const getSave = useCallback(() => saveRef.current, []);
 
+  // Admin-paneelin käyttämä suora save-asetus (kohtausten selailu).
+  const adminSetSave = useCallback((save, area) => {
+    saveRef.current = { ...(saveRef.current || {}), ...save };
+    if (area) setCheckpoint(area);
+    persistSave(save);
+  }, [persistSave]);
+
   const handleRevealComplete = useCallback(() => {
     setZombieReveal(false);
     setZombieFightStarted(true);
@@ -504,7 +523,7 @@ function App() {
         <>
           <GameCanvas
             onGameEvent={handleGameEvent}
-            inputEnabled={!profileOpen && !settingsOpen && !zombieReveal && !darknessReveal && !cityReveal && !roadblockReveal && !mokkiReveal && !katakombiReveal && !kirkkoReveal && !dead}
+            inputEnabled={!profileOpen && !settingsOpen && !adminOpen && !zombieReveal && !darknessReveal && !cityReveal && !roadblockReveal && !mokkiReveal && !katakombiReveal && !kirkkoReveal && !dead}
             triggerZombieFight={zombieFightStarted}
             restartKey={restartKey}
             gotoScene={gotoScene}
@@ -556,6 +575,11 @@ function App() {
               <button onClick={() => setSettingsOpen(true)} title="Asetukset" aria-label="Asetukset">
                 <GearIcon />
               </button>
+              {user?.role === 'admin' && (
+                <button onClick={() => setAdminOpen(true)} title="Ylläpito" aria-label="Ylläpito">
+                  <ShieldIcon />
+                </button>
+              )}
               <button onClick={handleLogout} title="Kirjaudu ulos" aria-label="Kirjaudu ulos">
                 <DoorExitIcon />
               </button>
@@ -577,6 +601,16 @@ function App() {
               settings={audioSettings}
               onClose={() => setSettingsOpen(false)}
               onSettingsChanged={setAudioSettings}
+            />
+          )}
+
+          {user?.role === 'admin' && (
+            <AdminPanel
+              open={adminOpen}
+              onClose={() => setAdminOpen(false)}
+              onJump={changeScene}
+              onSetSave={adminSetSave}
+              getSave={getSave}
             />
           )}
 
