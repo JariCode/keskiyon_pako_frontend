@@ -8,6 +8,7 @@ import MetsaScene from './scenes/MetsaScene';
 import MokkiScene from './scenes/MokkiScene';
 import HautausmaaScene from './scenes/HautausmaaScene';
 import KatakombiScene from './scenes/KatakombiScene';
+import KirkkoScene from './scenes/KirkkoScene';
 import './GameCanvas.css';
 
 export default function GameCanvas({
@@ -75,6 +76,7 @@ export default function GameCanvas({
     gameRef.current.scene.add('MokkiScene', MokkiScene, false);
     gameRef.current.scene.add('HautausmaaScene', HautausmaaScene, false);
     gameRef.current.scene.add('KatakombiScene', KatakombiScene, false);
+    gameRef.current.scene.add('KirkkoScene', KirkkoScene, false);
 
     // Käynnistä oikea scene tallennuksen currentArea-kentän mukaan
     const save = getSaveRef.current();
@@ -87,6 +89,7 @@ export default function GameCanvas({
       mokki: 'MokkiScene',
       hautausmaa: 'HautausmaaScene',
       katakombi: 'KatakombiScene',
+      kirkko: 'KirkkoScene',
     };
     const startScene = areaToScene[save?.currentArea] || 'ApartmentScene';
     currentSceneRef.current = startScene;

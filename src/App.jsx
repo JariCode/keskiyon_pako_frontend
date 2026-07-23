@@ -9,6 +9,7 @@ import KaupunkiReveal from './components/KaupunkiReveal';
 import TiesulkuReveal from './components/TiesulkuReveal';
 import MokkiReveal from './components/MokkiReveal';
 import KatakombiReveal from './components/KatakombiReveal';
+import KirkkoReveal from './components/KirkkoReveal';
 import DeathScreen from './components/DeathScreen';
 import ProfilePanel from './components/ProfilePanel';
 import SettingsPanel from './components/SettingsPanel';
@@ -75,6 +76,7 @@ function App() {
   const [sceneSpawn, setSceneSpawn] = useState('asunto');
   const [mokkiReveal, setMokkiReveal] = useState(false);
   const [katakombiReveal, setKatakombiReveal] = useState(false);
+  const [kirkkoReveal, setKirkkoReveal] = useState(false);
 
   const saveRef = useRef(null);
   const savingRef = useRef(false);
@@ -84,7 +86,7 @@ function App() {
   const currentTrackRef = useRef('');
   const fadeIntervalRef = useRef(null);
 
-  const isAnyRevealActive = zombieReveal || darknessReveal || cityReveal || roadblockReveal || mokkiReveal || katakombiReveal;
+  const isAnyRevealActive = zombieReveal || darknessReveal || cityReveal || roadblockReveal || mokkiReveal || katakombiReveal || kirkkoReveal;
 
   // Efektiivinen ääniefektien voimakkuus (mykistys -> 0). Välitetään cutscene-
   // komponenteille jotka soittavat omia efektejään (koputus, karjaisu, siren jne.).
@@ -337,6 +339,9 @@ function App() {
     if (event.type === 'hautausmaa-to-katakombi') {
       setKatakombiReveal(true);
     }
+    if (event.type === 'katakombi-to-kirkko') {
+      setKirkkoReveal(true);
+    }
     if (event.type === 'city-to-roadblock') {
       setRoadblockReveal(true);
     }
@@ -375,6 +380,12 @@ function App() {
     changeScene('KatakombiScene', 'hautausmaa');
   }, [changeScene]);
 
+  const handleKirkkoRevealComplete = useCallback(() => {
+    setKirkkoReveal(false);
+    setCheckpoint('kirkko');
+    changeScene('KirkkoScene', 'katakombi');
+  }, [changeScene]);
+
   const handleDarknessComplete = useCallback(() => {
     setDarknessReveal(false);
     setDarknessDoneSignal((n) => n + 1);
@@ -392,6 +403,7 @@ function App() {
     setRoadblockReveal(false);
     setMokkiReveal(false);
     setKatakombiReveal(false);
+    setKirkkoReveal(false);
     setRestartKey((k) => k + 1);
   }, []);
 
@@ -437,6 +449,7 @@ function App() {
     setDarknessReveal(false);
     setMokkiReveal(false);
     setKatakombiReveal(false);
+    setKirkkoReveal(false);
     setDead(false);
     setDeathStats(null);
     setCheckpoint('asunto');
@@ -491,7 +504,7 @@ function App() {
         <>
           <GameCanvas
             onGameEvent={handleGameEvent}
-            inputEnabled={!profileOpen && !settingsOpen && !zombieReveal && !darknessReveal && !cityReveal && !roadblockReveal && !mokkiReveal && !katakombiReveal && !dead}
+            inputEnabled={!profileOpen && !settingsOpen && !zombieReveal && !darknessReveal && !cityReveal && !roadblockReveal && !mokkiReveal && !katakombiReveal && !kirkkoReveal && !dead}
             triggerZombieFight={zombieFightStarted}
             restartKey={restartKey}
             gotoScene={gotoScene}
@@ -577,6 +590,7 @@ function App() {
 
           {mokkiReveal && <MokkiReveal onComplete={handleMokkiRevealComplete} sfxVolume={effectiveSfxVolume} />}
           {katakombiReveal && <KatakombiReveal onComplete={handleKatakombiRevealComplete} sfxVolume={effectiveSfxVolume} />}
+          {kirkkoReveal && <KirkkoReveal onComplete={handleKirkkoRevealComplete} sfxVolume={effectiveSfxVolume} />}
 
           {dead && (
             <DeathScreen

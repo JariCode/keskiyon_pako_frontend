@@ -217,6 +217,24 @@ export default class KatakombiScene extends BaseScene {
     this.emitHint('Katakombit. Ilma on kylmää ja kosteaa.');
     this.emitStats();
 
+    // --- Kirkon ovi (poistuminen, 83, 2). E:llä siirrytään. Ei paluuta. ---
+    this.kirkkoDoorX = 83 * TILE;
+    this.kirkkoDoorY = 2 * TILE;
+    this.enteringKirkko = false;
+    this.kirkkoHint = this.add.text(this.kirkkoDoorX, this.kirkkoDoorY + 24, 'Ovi kirkkoon (E)', {
+      fontSize: '16px',
+      color: '#fff2c0',
+      fontStyle: 'bold',
+      backgroundColor: '#000000cc',
+      padding: { x: 8, y: 4 },
+      stroke: '#000000',
+      strokeThickness: 3,
+    })
+      .setOrigin(0.5, 0)
+      .setDepth(12)
+      .setScrollFactor(1)
+      .setVisible(false);
+
     // Tallennuspiste: katakombeihin saavuttu
     this.game.events.emit('game-event', {
       type: 'request-save',
@@ -329,6 +347,10 @@ export default class KatakombiScene extends BaseScene {
     {
       const eJustPressed = this.keyE.isDown && !this.eWasDown;
 
+      if (eJustPressed) {
+        this.tryEnterKirkko();
+      }
+
       if (this.pouches && this.pouches.length > 0) {
         for (let i = this.pouches.length - 1; i >= 0; i--) {
           const p = this.pouches[i];
@@ -406,9 +428,29 @@ export default class KatakombiScene extends BaseScene {
       this.updateHeldFlashlight();
     }
 
+    // Kirkon oven vihje
+    if (this.kirkkoHint) {
+      const dKirkko = Phaser.Math.Distance.Between(
+        this.player.x, this.player.y, this.kirkkoDoorX, this.kirkkoDoorY
+      );
+      this.kirkkoHint.setVisible(dKirkko < 55);
+    }
+
     this.eWasDown = this.keyE.isDown;
     this.spaceWasDown = this.keySpace.isDown;
     this.emitStats();
+  }
+
+  tryEnterKirkko() {
+    if (this.enteringKirkko) return;
+    const dist = Phaser.Math.Distance.Between(
+      this.player.x, this.player.y, this.kirkkoDoorX, this.kirkkoDoorY
+    );
+    if (dist < 55) {
+      this.enteringKirkko = true;
+      this.playDoorSound();
+      this.game.events.emit('game-event', { type: 'katakombi-to-kirkko' });
+    }
   }
 
   // Piirtää yhden pehmeän pyöreän hehkun jokaiselle soihdulle (sama kuin metsässä).

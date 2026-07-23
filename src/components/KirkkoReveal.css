@@ -1,0 +1,126 @@
+.kirk {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.kirk-dark {
+  position: absolute;
+  inset: 0;
+  background: #000000;
+  opacity: 0;
+  animation: kiDarken 1.2s ease-in forwards;
+}
+
+@keyframes kiDarken {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.kirk-scene {
+  position: relative;
+  z-index: 2;
+  width: min(88vw, 780px);
+  opacity: 0;
+  transform: scale(1.08) translateY(3%);
+}
+
+.kirk-revealed .kirk-scene {
+  animation: kiReveal 1.3s ease-out forwards;
+}
+
+.kirk-lunging .kirk-scene {
+  animation: kiHide 0.9s ease-in forwards;
+}
+
+@keyframes kiReveal {
+  from { opacity: 0; transform: scale(1.08) translateY(3%); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes kiHide {
+  from { opacity: 1; transform: scale(1); }
+  to { opacity: 0; transform: scale(1.05); }
+}
+
+.kirk-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 0 40px rgba(0, 0, 0, 0.9));
+}
+
+/* Zombit piilossa alussa, tulevat esiin vasta revealed-vaiheessa */
+.kirk-zombies {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.kirk-zombies-show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.kirk-zombie {
+  animation: kiZombieSway 1.6s ease-in-out infinite alternate;
+}
+.kirk-zombie-2 { animation-delay: 0.3s; }
+.kirk-zombie-3 { animation-delay: 0.6s; }
+
+@keyframes kiZombieSway {
+  from { transform: translateX(-1.5px) rotate(-1deg); }
+  to { transform: translateX(1.5px) rotate(1deg); }
+}
+
+.kirk-pews {
+  animation: kiPewFade 1s ease-out;
+}
+@keyframes kiPewFade {
+  from { opacity: 0; }
+  to { opacity: 0.8; }
+}
+
+.kirk-dust circle {
+  animation: kiDustFloat 5s ease-in-out infinite alternate;
+}
+@keyframes kiDustFloat {
+  from { transform: translateY(0); opacity: 0.4; }
+  to { transform: translateY(-14px); opacity: 0.7; }
+}
+
+.kirk-text-wrap {
+  position: absolute;
+  bottom: 11%;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  text-align: center;
+}
+
+.kirk-text {
+  display: inline-block;
+  font-family: 'VT323', monospace;
+  font-size: 1.7rem;
+  letter-spacing: 0.08em;
+  color: #e0d4c0;
+  text-shadow: 0 0 14px rgba(120, 140, 220, 0.5), 0 2px 4px rgba(0, 0, 0, 0.9);
+  animation: kiTextIn 0.5s ease-out;
+}
+
+@keyframes kiTextIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.kirk-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 25%, rgba(0, 0, 0, 0.9) 100%);
+}
