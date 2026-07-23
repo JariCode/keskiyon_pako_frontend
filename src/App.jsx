@@ -102,6 +102,14 @@ function App() {
       desiredTrack = '/assets/audio/bg-music.mp3';
     }
 
+    // Tämän efektiajon oma musiikki-instanssi ja kuuntelijat. Näihin
+    // viitataan cleanupissa (ei bgMusicRef.currentiin), koska React
+    // StrictModen kehitystilan tuplakutsu (mount -> cleanup -> mount)
+    // muuten jättäisi ensimmäisellä ajolla luodun Audio-olion soimaan
+    // taustalle ikuisesti sen jälkeen kun ref on jo vaihtunut uuteen.
+    let createdMusic = null;
+    let playMusicListener = null;
+
     if (desiredTrack !== currentTrackRef.current) {
       if (bgMusicRef.current) {
         bgMusicRef.current.pause();
@@ -127,10 +135,28 @@ function App() {
 
         bgMusicRef.current = music;
         currentTrackRef.current = desiredTrack;
+        createdMusic = music;
+        playMusicListener = playMusic;
       } else {
         currentTrackRef.current = '';
       }
     }
+
+    return () => {
+      if (playMusicListener) {
+        window.removeEventListener('click', playMusicListener);
+        window.removeEventListener('keydown', playMusicListener);
+      }
+      if (createdMusic) {
+        createdMusic.pause();
+        // Jos ref osoittaa yhä tähän samaan instanssiin, nollataan sekin
+        // ettei seuraava ajo luule musiikin olevan jo oikea.
+        if (bgMusicRef.current === createdMusic) {
+          bgMusicRef.current = null;
+          currentTrackRef.current = '';
+        }
+      }
+    };
   }, [view, checkpoint, audioSettings]);
 
   // Musiikin vaimennus Reveal-animaatioiden ajaksi

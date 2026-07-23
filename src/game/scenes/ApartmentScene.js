@@ -52,6 +52,9 @@ export default class ApartmentScene extends Phaser.Scene {
       frameHeight: 32,
     });
     this.load.audio('punch', '/assets/sfx/punch.mp3');
+    this.load.audio('collect', '/assets/sfx/collect.mp3');
+    this.load.audio('door', '/assets/sfx/door.mp3');
+    this.load.audio('level', '/assets/sfx/level.mp3');
     this.load.audio('knocking', '/assets/sfx/knocking.mp3');
     this.load.tilemapTiledJSON('asunto', '/assets/asunto.json');
   }
@@ -695,7 +698,7 @@ export default class ApartmentScene extends Phaser.Scene {
     this.batHint.destroy();
 
     this.heldBat.setVisible(true);
-
+    this.playCollectSound();
     this.emitHint('Sait mailan! Lähde nyt ovesta käytäville.', 'success');
 
     this.emitStats();
@@ -710,6 +713,7 @@ export default class ApartmentScene extends Phaser.Scene {
     this.door = null;
     this.knockText?.destroy();
     this.knockText = null;
+    this.playDoorSound();
     this.emitHint('');
 
     // Pysäytä oven koputus-ääni.
@@ -837,6 +841,32 @@ export default class ApartmentScene extends Phaser.Scene {
   }
 
   // Pelaajan isku-liike: maila heilahtaa tai hahmo nytkähtää eteenpäin
+  // ========== YHTEISET SFX-ÄÄNET (collect/door/level) ==========
+  // ApartmentScene ei peri BaseSceneä, joten samat apumetodit tässä myös.
+  playCollectSound() {
+    if (this.cache.audio.exists('collect')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('collect', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
+  }
+
+  playDoorSound() {
+    if (this.cache.audio.exists('door')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('door', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
+  }
+
+  playLevelSound() {
+    if (this.cache.audio.exists('level')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('level', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
+  }
+
   doPlayerAttackMotion() {
     // Lyöntiääni (soi joka iskulla)
     if (this.cache.audio.exists('punch')) {
@@ -967,6 +997,9 @@ export default class ApartmentScene extends Phaser.Scene {
 
     const leveledUp = this.stats.registerKill();
     this.firstZombieKilled = true;
+    if (leveledUp) {
+      this.playLevelSound();
+    }
 
     this.emitHint(leveledUp
       ? `Zombie kaatui. TASO NOUSI! Nyt taso ${this.stats.level}`

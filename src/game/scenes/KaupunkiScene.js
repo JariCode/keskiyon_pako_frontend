@@ -31,6 +31,9 @@ export default class KaupunkiScene extends BaseScene {
       frameHeight: 32,
     });
     this.load.audio('punch', '/assets/sfx/punch.mp3');
+    this.load.audio('collect', '/assets/sfx/collect.mp3');
+    this.load.audio('door', '/assets/sfx/door.mp3');
+    this.load.audio('level', '/assets/sfx/level.mp3');
     this.load.spritesheet('troll', '/assets/spritesheets/Corvinian_Troll-Sheet.png', {
       frameWidth: 64,
       frameHeight: 64,
@@ -416,7 +419,10 @@ export default class KaupunkiScene extends BaseScene {
       },
     });
 
-    this.stats.registerKill();
+    const leveledUp = this.stats.registerKill();
+    if (leveledUp) {
+      this.playLevelSound();
+    }
     this.emitHint('Hirviö kaatui. Jatka matkaa.', 'success');
     this.emitStats();
   }

@@ -236,6 +236,7 @@ export default class BaseScene extends Phaser.Scene {
         onComplete: () => { this.heldBat?.setVisible(false); },
       });
     }
+    this.playCrackSound();
     this.emitHint('Maila hajosi! Etsi uusi ase.', 'warning');
     this.emitStats();
   }
@@ -331,6 +332,7 @@ export default class BaseScene extends Phaser.Scene {
     this.axeHint?.destroy();
     this.axeHint = null;
     this.heldAxe?.setVisible(true);
+    this.playCollectSound();
     this.emitHint('Sait kirveen! Hakkaa vihollisia (SPACE).', 'success');
     this.emitStats();
 
@@ -447,6 +449,7 @@ export default class BaseScene extends Phaser.Scene {
     this.pouchHint = null;
 
     this.stats.heal(this.stats.maxHP);
+    this.playCollectSound();
     this.emitHint('Löysit lääkintätarvikkeita! Terveys palautui täyteen.', 'success');
     this.emitStats();
 
@@ -684,7 +687,10 @@ export default class BaseScene extends Phaser.Scene {
         onComplete: () => { e.sprite.destroy(); e.shadow.destroy(); },
       });
     });
-    this.stats.registerKill();
+    const leveledUp = this.stats.registerKill();
+    if (leveledUp) {
+      this.playLevelSound();
+    }
     this.emitHint('Vihollinen kaatui.', 'success');
     this.emitStats();
   }
@@ -764,6 +770,41 @@ export default class BaseScene extends Phaser.Scene {
     if (this.gameOverTriggered) return;
     this.gameOverTriggered = true;
     this.game.events.emit('game-event', { type: 'game-over', stats: this.stats.getSnapshot() });
+  }
+
+  // ========== YHTEISET SFX-ÄÄNET (collect/door/level) ==========
+  // Jokainen scene lataa nämä preloadissa: this.load.audio('collect', ...) jne.
+  // Turvallinen: ei kaadu jos ääntä ei ladattu.
+  playCollectSound() {
+    if (this.cache.audio.exists('collect')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('collect', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
+  }
+
+  playDoorSound() {
+    if (this.cache.audio.exists('door')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('door', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
+  }
+
+  playLevelSound() {
+    if (this.cache.audio.exists('level')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('level', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
+  }
+
+  playCrackSound() {
+    if (this.cache.audio.exists('crack')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('crack', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
   }
 
   emitHint(text, kind = 'hint') {

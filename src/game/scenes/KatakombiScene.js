@@ -31,6 +31,9 @@ export default class KatakombiScene extends BaseScene {
       frameHeight: 32,
     });
     this.load.audio('punch', '/assets/sfx/punch.mp3');
+    this.load.audio('collect', '/assets/sfx/collect.mp3');
+    this.load.audio('door', '/assets/sfx/door.mp3');
+    this.load.audio('level', '/assets/sfx/level.mp3');
 
     this.loadEnemyType('tytto');
     this.loadEnemyType('nainen');
@@ -364,6 +367,7 @@ export default class KatakombiScene extends BaseScene {
             this.pouches.splice(i, 1);
 
             this.stats.heal(this.stats.maxHP);
+            this.playCollectSound();
             this.emitHint('Löysit lääkintätarvikkeita! Terveys palautui täyteen.', 'success');
             this.emitStats();
 

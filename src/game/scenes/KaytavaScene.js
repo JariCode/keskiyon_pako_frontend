@@ -27,6 +27,9 @@ export default class KaytavaScene extends Phaser.Scene {
     this.load.image('maila', '/assets/spritesheets/maila.png');
     this.load.spritesheet('hahmo', '/assets/spritesheets/hahmo.png', { frameWidth: 32, frameHeight: 32 });
     this.load.audio('punch', '/assets/sfx/punch.mp3');
+    this.load.audio('collect', '/assets/sfx/collect.mp3');
+    this.load.audio('door', '/assets/sfx/door.mp3');
+    this.load.audio('level', '/assets/sfx/level.mp3');
     this.load.spritesheet('zw-idle', '/assets/spritesheets/zombie-woman-idle.png', { frameWidth: 32, frameHeight: 32 });
     this.load.spritesheet('zw-walk', '/assets/spritesheets/zombie-woman-walk.png', { frameWidth: 32, frameHeight: 32 });
     this.load.spritesheet('zw-attack', '/assets/spritesheets/zombie-woman-attack.png', { frameWidth: 32, frameHeight: 32 });
@@ -423,6 +426,32 @@ export default class KaytavaScene extends Phaser.Scene {
     }
   }
 
+  // ========== YHTEISET SFX-ÄÄNET (collect/door/level) ==========
+  // KaytavaScene ei peri BaseSceneä, joten samat apumetodit tässä myös.
+  playCollectSound() {
+    if (this.cache.audio.exists('collect')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('collect', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
+  }
+
+  playDoorSound() {
+    if (this.cache.audio.exists('door')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('door', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
+  }
+
+  playLevelSound() {
+    if (this.cache.audio.exists('level')) {
+      const sfxMuted = this.registry.get('sfxMuted');
+      const sfxVol = this.registry.get('sfxVolume');
+      this.sound.play('level', { volume: sfxMuted ? 0 : (sfxVol ?? 1) });
+    }
+  }
+
   doPlayerAttackMotion() {
     const dir = this.lastDirection;
 
@@ -543,6 +572,9 @@ export default class KaytavaScene extends Phaser.Scene {
       dyingShadow.destroy();
     });
     const leveledUp = this.stats.registerKill();
+    if (leveledUp) {
+      this.playLevelSound();
+    }
     this.emitHint(leveledUp ? `Kaatui. TASO NOUSI! Nyt taso ${this.stats.level}` : 'Kaatui. Selvisit taistelusta.', 'success');
     this.emitStats();
     // HUOM: ei tallenneta vielä — tallennuspiste tulee vasta kun
@@ -621,6 +653,7 @@ export default class KaytavaScene extends Phaser.Scene {
     this.hasFlashlight = true;
     this.savedDarkness = true;
     this.savedZombieKilled = true;
+    this.playCollectSound();
     this.emitHint('Sait taskulampun. Se valaisee edessäsi.', 'success');
     this.emitStats();
     // Kytke valokeila päälle

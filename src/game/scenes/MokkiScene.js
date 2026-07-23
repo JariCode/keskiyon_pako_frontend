@@ -31,6 +31,10 @@ export default class MokkiScene extends BaseScene {
       frameHeight: 32,
     });
     this.load.audio('punch', '/assets/sfx/punch.mp3');
+    this.load.audio('collect', '/assets/sfx/collect.mp3');
+    this.load.audio('door', '/assets/sfx/door.mp3');
+    this.load.audio('level', '/assets/sfx/level.mp3');
+    this.load.audio('crack', '/assets/sfx/crack.mp3');
     this.loadEnemyType('cabinZombie');
     this.load.tilemapTiledJSON('mokki', '/assets/mokki.json');
   }
@@ -199,6 +203,7 @@ export default class MokkiScene extends BaseScene {
     );
     if (dist < 55) {
       this.enteringHautausmaa = true;
+      this.playDoorSound();
       this.game.events.emit('game-event', { type: 'mokki-to-hautausmaa' });
     }
   }

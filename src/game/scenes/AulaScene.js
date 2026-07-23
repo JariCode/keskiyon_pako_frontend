@@ -31,6 +31,9 @@ export default class AulaScene extends BaseScene {
       frameHeight: 32,
     });
     this.load.audio('punch', '/assets/sfx/punch.mp3');
+    this.load.audio('collect', '/assets/sfx/collect.mp3');
+    this.load.audio('door', '/assets/sfx/door.mp3');
+    this.load.audio('level', '/assets/sfx/level.mp3');
     this.load.tilemapTiledJSON('aula', '/assets/aula.json');
   }
 
@@ -166,6 +169,7 @@ export default class AulaScene extends BaseScene {
     );
     if (dist < 55) {
       this.enteringCity = true;
+      this.playDoorSound();
       this.game.events.emit('game-event', { type: 'aula-to-city' });
     }
   }
