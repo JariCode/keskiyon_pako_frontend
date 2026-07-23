@@ -4,6 +4,7 @@ import {
   adminGetLogs,
   adminChangeRole,
   adminDeleteUser,
+  adminUnlockUser,
 } from '../api/authApi';
 import './AdminPanel.css';
 
@@ -119,6 +120,16 @@ export default function AdminPanel({ open, onClose, onJump, onSetSave, getSave }
     });
   };
 
+  const unlockUser = async (user) => {
+    try {
+      await adminUnlockUser({ userId: user._id });
+      showNotice(`${user.username} tili avattu.`);
+      loadUsers();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   const askDeleteUser = (user) => {
     setConfirm({
       title: 'Vahvista poisto',
@@ -207,6 +218,7 @@ export default function AdminPanel({ open, onClose, onJump, onSetSave, getSave }
                     <td>
                       {u.username}
                       {u.isSelf && <span className="adm-badge-self">sinä</span>}
+                      {u.isLocked && <span className="adm-badge-locked">lukittu</span>}
                     </td>
                     <td className="adm-muted">{u.email}</td>
                     <td>
@@ -220,6 +232,14 @@ export default function AdminPanel({ open, onClose, onJump, onSetSave, getSave }
                       >
                         Lokit
                       </button>
+                      {u.isLocked && (
+                        <button
+                          className="adm-btn adm-btn-sm adm-btn-primary"
+                          onClick={() => unlockUser(u)}
+                        >
+                          Avaa
+                        </button>
+                      )}
                       {/* Admin ei voi muuttaa omaa rooliaan eikä poistaa itseään */}
                       <button
                         className="adm-btn adm-btn-sm"

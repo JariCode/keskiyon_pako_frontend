@@ -13,7 +13,20 @@ async function request(path, options = {}) {
   const data = await res.json().catch(() => null);
 
   if (!res.ok) {
-    const message = data?.details?.join(', ') || data?.error || 'Jokin meni pieleen';
+    // Varaviestit tilanteisiin joissa palvelin ei palauta JSON-virhettä
+    // (esim. proxy tai välipalvelin vastaa ennen sovellusta).
+    const fallbackByStatus = {
+      429: 'Liian monta pyyntöä. Yritä myöhemmin uudelleen.',
+      423: 'Tili on lukittu. Yritä myöhemmin uudelleen.',
+      401: 'Kirjautuminen vaaditaan.',
+      403: 'Ei oikeuksia.',
+      404: 'Kohdetta ei löytynyt.',
+    };
+    const message =
+      data?.details?.join(', ') ||
+      data?.error ||
+      fallbackByStatus[res.status] ||
+      'Jokin meni pieleen';
     throw new Error(message);
   }
 
@@ -109,6 +122,10 @@ export function adminChangeRole({ userId, role }) {
     method: 'PATCH',
     body: JSON.stringify({ role }),
   });
+}
+
+export function adminUnlockUser({ userId }) {
+  return request(`/admin/users/${userId}/unlock`, { method: 'PATCH' });
 }
 
 export function adminDeleteUser({ userId }) {

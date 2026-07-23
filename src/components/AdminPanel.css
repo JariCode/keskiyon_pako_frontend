@@ -142,6 +142,17 @@
   text-transform: uppercase;
 }
 
+.adm-badge-locked {
+  margin-left: 8px;
+  padding: 1px 6px;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: #ffd9dc;
+  background: #6e2228;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+
 .adm-role {
   padding: 2px 8px;
   border-radius: 3px;
@@ -256,6 +267,15 @@
 .adm-log-login {
   color: #93d3aa;
   background: #12251a;
+}
+.adm-log-login_failed,
+.adm-log-account_locked {
+  color: #e8c07a;
+  background: #2e2410;
+}
+.adm-log-admin_unlock_account {
+  color: #9fd0e6;
+  background: #142430;
 }
 
 .adm-log-desc {
